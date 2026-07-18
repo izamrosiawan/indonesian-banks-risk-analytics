@@ -141,6 +141,15 @@ Dalam analisis keuangan industri perbankan (*banking analytics*), pergerakan har
 3.  **Efisiensi Radikal BMRI (ROE ~21.1%)**
     BMRI membukukan ROE tertinggi di antara Big Four berkat efisiensi digital (*Livin'* untuk retail dan *Kopra* untuk korporasi) yang menurunkan beban operasional secara masif serta dominasi kuat pada penyaluran kredit korporasi besar nasional dengan kualitas aset prima (NPL Gross terendah `1.2%`). Valuasi BMRI pada PB ratio 2.1x merupakan opsi investasi bertumbuh (*growth value*) yang sangat atraktif bagi fund manager global.
 
+### 🏛️ Studi Kasus Makroekonomi & Politik: Analisis Tekanan Pasar Era Transisi Pemerintahan (2024 - 2026)
+
+Sejak transisi pemerintahan ke Presiden Prabowo Subianto pada akhir 2024 hingga pertengahan 2026, pasar saham Indonesia mengalami tekanan likuiditas yang cukup berat. Dampak dari ketidakpastian iklim investasi ini terekam jelas pada pergerakan data portofolio perbankan kita:
+
+*   **Sentimen Fiskal & Aksi Jual Asing (*Foreign Outflows*)**: Kekhawatiran awal pelaku pasar global mengenai defisit APBN terkait pendanaan program prioritas nasional (seperti Makan Bergizi Gratis) memicu kenaikan *yield* obligasi dan pelemahan Rupiah. Investor institusi asing melakukan aksi jual bersih (*net sell*) masif. Saham *Big Four* sebagai penggerak indeks utama menjadi sasaran penarikan dana asing terdalam (tercermin dari *Maximum Drawdown* BBNI yang mencapai `-66.30%` dan BMRI `-54.26%`).
+*   **Kebijakan Suku Bunga Tinggi (*BI-Rate*)**: Bank Indonesia terpaksa mempertahankan suku bunga acuan di level tinggi (kisaran 6.00% - 6.25%) sepanjang 2025 hingga 2026 demi membentengi nilai tukar Rupiah. Kebijakan moneter ketat ini meningkatkan biaya dana (*Cost of Funds*) perbankan, menekan pertumbuhan kredit, serta mempersempit margin bunga bersih (*NIM compression*).
+*   **Kenaikan NPL Sektor Mikro**: Pasca-berakhirnya relaksasi restrukturisasi kredit OJK (Maret 2024), rasio kredit macet industri mulai merangkak naik. Efek terberat dirasakan oleh **BBRI** yang fokus pada kredit mikro dan ultra-mikro (NPL Gross berada di level ~3.1%). Peningkatan NPL memaksa BBRI mengalokasikan pencadangan (*provisions*) yang sangat besar, mengoreksi laba bersih, dan menjatuhkan harga sahamnya ke area Rp 2.970 per Juli 2026.
+*   **BBCA Sebagai Pelindung Portofolio (*Safe Haven*)**: Di tengah kejatuhan sektor perbankan, BBCA membuktikan statusnya sebagai *safe haven* dengan mencatatkan drawdown terendah (`-51.79%`) dan performa risiko terbaik (Sharpe Ratio `0.211`). Keunggulan CASA (dana murah > 80%) melindungi BBCA dari guncangan biaya dana, sehingga posisinya relatif aman dibandingkan bank-bank BUMN.
+
 ---
 
 ## 🎯 Kesimpulan & Rekomendasi Portofolio
