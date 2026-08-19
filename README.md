@@ -1,4 +1,4 @@
-# Analisis Finansial Kuantitatif & Valuasi Portofolio Saham Big Four Bank Indonesia (2015 - 2026)
+﻿# Analisis Finansial Kuantitatif & Valuasi Portofolio Saham Big Four Bank Indonesia (2015 - 2026)
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![Statsmodels](https://img.shields.io/badge/Statsmodels-Finance-orange.svg)](https://www.statsmodels.org/)
@@ -11,7 +11,7 @@ Analisis ini menggunakan pendekatan statistik keuangan dan teori portofolio mode
 
 ---
 
-## 📂 Struktur Proyek
+## Struktur Proyek
 
 ```
 ├── .gitignore          # Konfigurasi pengabaian cache Git
@@ -26,7 +26,7 @@ Analisis ini menggunakan pendekatan statistik keuangan dan teori portofolio mode
 
 ---
 
-## 📈 Metodologi Analisis
+## Metodologi Analisis
 
 1.  **Transformasi Data**: Harga saham harian diubah menjadi log return harian ($r_t = \ln(P_t/P_{t-1})$) untuk menjamin sifat aditif waktu dan memenuhi asumsi model statistik keuangan.
 2.  **Uji Stasioneritas (ADF)**: Uji *Augmented Dickey-Fuller* dilakukan untuk membuktikan data log return bersifat stasioner ($H_0$: data memiliki unit root / non-stasioner ditolak jika $p\text{-value} < 0.05$).
@@ -42,7 +42,7 @@ Analisis ini menggunakan pendekatan statistik keuangan dan teori portofolio mode
 
 ---
 
-## 📊 Hasil Kuantitatif & Pembahasan Visualisasi
+## Hasil Kuantitatif & Pembahasan Visualisasi
 
 ### 1. Tren Harga Saham Jangka Panjang
 Harga saham historis telah disesuaikan secara otomatis terhadap pemecahan saham (*stock split*) dan dividen (*adjusted close price*).
@@ -132,7 +132,7 @@ Perbandingan hasil investasi kumulatif awal Rp 1.000.000 antara aset tunggal dan
 
 ---
 
-## 🏛️ Valuasi Fundamental & Korelasi Harga Pasar
+## Valuasi Fundamental & Korelasi Harga Pasar
 
 Dalam analisis keuangan industri perbankan (*banking analytics*), pergerakan harga saham sangat berkorelasi erat dengan metrik operasional riil bank. Berikut perbandingan parameter kinerja keuangan kunci (*typical industry averages*):
 
@@ -145,7 +145,7 @@ Dalam analisis keuangan industri perbankan (*banking analytics*), pergerakan har
 
 ---
 
-## 💻 Implementasi Modular & Pengujian Otomatis
+## Implementasi Modular & Pengujian Otomatis
 
 Modul analisis risiko finansial tersedia di `src/risk_engine.py`:
 
@@ -165,7 +165,7 @@ pytest tests/
 
 ---
 
-## 🎯 Kesimpulan & Rekomendasi Portofolio
+## Kesimpulan & Rekomendasi Portofolio
 
 1.  **Jangkar Portofolio (Defensif)**: **BBCA** direkomendasikan sebagai porsi penahan guncangan portofolio terbesar (*core holding*). Karakteristik volatilitas rendah, drawdown minimal, dan Beta defensif (0.710) terbukti efektif menjaga nilai aset portofolio tetap tangguh saat pasar makroekonomi sedang lesu.
 2.  **Mesin Return (Growth)**: **BMRI** dan **BBRI** direkomendasikan untuk dibeli secara agresif saat siklus pemotongan suku bunga bank sentral dimulai atau ketika pertumbuhan ekonomi nasional sedang ekspansif guna mendongkrak return portofolio secara keseluruhan.
@@ -173,7 +173,7 @@ pytest tests/
 
 ---
 
-## 🚀 Cara Menjalankan
+## Cara Menjalankan
 
 1. **Pasang Dependensi**:
    ```bash
@@ -187,3 +187,4 @@ pytest tests/
 
 ---
 *Indonesian Big Four Banks Risk Analytics Project.*
+
