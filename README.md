@@ -1,5 +1,10 @@
 # Analisis Finansial Kuantitatif & Valuasi Portofolio Saham Big Four Bank Indonesia (2015 - 2026)
 
+[![Python](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
+[![Statsmodels](https://img.shields.io/badge/Statsmodels-Finance-orange.svg)](https://www.statsmodels.org/)
+[![Domain](https://img.shields.io/badge/Domain-Quantitative%20Finance-green.svg)](#)
+[![Tests](https://img.shields.io/badge/Tests-Pytest%20Passing-brightgreen.svg)](#)
+
 Proyek ini menyajikan analisis kuantitatif dan valuasi portofolio terhadap empat emiten perbankan terbesar (*The Big Four* / *Big Banks*) di Bursa Efek Indonesia (BEI): **PT Bank Central Asia Tbk (BBCA)**, **PT Bank Rakyat Indonesia (Persero) Tbk (BBRI)**, **PT Bank Mandiri (Persero) Tbk (BMRI)**, dan **PT Bank Negara Indonesia (Persero) Tbk (BBNI)** selama periode **2 Januari 2015 hingga 17 Juli 2026** (2.840 hari perdagangan).
 
 Analisis ini menggunakan pendekatan statistik keuangan dan teori portofolio modern untuk mengukur profil risiko, return historis, risiko ekstrim pasar, korelasi sektoral, sensitivitas beta, serta keterkaitannya dengan indikator fundamental perbankan nyata.
@@ -8,11 +13,16 @@ Analisis ini menggunakan pendekatan statistik keuangan dan teori portofolio mode
 
 ## 📂 Struktur Proyek
 
-*   📂 **`data/`**
-    *   `BBCA.csv`, `BBRI.csv`, `BMRI.csv`, `BBNI.csv` - Data historis masing-masing emiten dari Yahoo Finance.
-    *   `combined_close.csv` - Data gabungan harga penutupan yang disesuaikan (*dividend/split adjusted close*).
-*   📂 **`images/`** - Visualisasi plot komputasi yang dibahas di bawah ini.
-*   📓 **`notebook.ipynb`** - Jupyter Notebook yang berisi baris kode Python bersih untuk pemrosesan data, kalkulasi return log barian, pengujian statistik, estimasi risiko stokastik, dan eksekusi visualisasi plot.
+```
+├── .gitignore          # Konfigurasi pengabaian cache Git
+├── data/               # Data historis emiten (BBCA.csv, BBRI.csv, BMRI.csv, BBNI.csv, combined_close.csv)
+├── images/             # Visualisasi plot komputasi 300 DPI
+├── src/                # Modular Python financial risk engine (BankRiskEngine)
+├── tests/              # Automated unit tests (Pytest: VaR, Expected Shortfall, ADF test)
+├── notebook.ipynb      # Jupyter Notebook: Pemrosesan data, return log harian, pengujian statistik, estimasi risiko
+├── requirements.txt    # Pinned stable dependencies
+└── README.md           # Laporan utama: Pembahasan bisnis, rumus, tabel metrik, dan visualisasi
+```
 
 ---
 
@@ -133,29 +143,47 @@ Dalam analisis keuangan industri perbankan (*banking analytics*), pergerakan har
 | **BMRI** | Korporasi & Digital Banking | 21.1% | 1.2% | 5.4% | 11.5x | 2.1x |
 | **BBNI** | Korporasi & Global Banking | 14.5% | 2.3% | 4.4% | 9.8x | 1.2x |
 
-### Analisis Keterkaitan Fundamental dan Harga Pasar:
-1.  **Mengapa Valuasi BBCA Paling Premium? (PB Ratio ~4.8x)**
-    BBCA menguasai jaringan transaksi ritel nasional yang masif di Indonesia, menghasilkan kontribusi dana murah (CASA ratio) konsisten di atas 80%. Ini memberikan bank biaya dana (*cost of funds*) yang sangat rendah (di bawah 2%). Hasilnya, BBCA memiliki daya tahan margin bunga bersih (NIM) yang sangat stabil serta rasio kredit macet (NPL) yang sangat rendah (~1.9%). Pasar bersedia membayar harga premium untuk profitabilitas yang kokoh dan berisiko sangat rendah ini (*flight to quality*).
-2.  **Karakteristik High-Yield BBRI (NIM ~7.8%)**
-    BBRI memiliki NIM paling tinggi karena fokus penyaluran kredit pada segmen mikro dan ultra-mikro (Kupedes & PNM Mekaar) yang yield bunganya tebal. Namun, segmen mikro memiliki volatilitas kredit macet yang lebih sensitif terhadap daya beli masyarakat bawah, tercermin dari rasio NPL Gross yang lebih tinggi (~3.1%). Hal ini menjelaskan mengapa volatilitas return harian saham BBRI (`31.79%`) jauh lebih tinggi dari BBCA (`24.37%`).
-3.  **Efisiensi Radikal BMRI (ROE ~21.1%)**
-    BMRI membukukan ROE tertinggi di antara Big Four berkat efisiensi digital (*Livin'* untuk retail dan *Kopra* untuk korporasi) yang menurunkan beban operasional secara masif serta dominasi kuat pada penyaluran kredit korporasi besar nasional dengan kualitas aset prima (NPL Gross terendah `1.2%`). Valuasi BMRI pada PB ratio 2.1x merupakan opsi investasi bertumbuh (*growth value*) yang sangat atraktif bagi fund manager global.
+---
 
-### 🏛️ Studi Kasus Makroekonomi & Politik: Analisis Tekanan Pasar Era Transisi Pemerintahan (2024 - 2026)
+## 💻 Implementasi Modular & Pengujian Otomatis
 
-Sejak transisi pemerintahan ke Presiden Prabowo Subianto pada akhir 2024 hingga pertengahan 2026, pasar saham Indonesia mengalami tekanan likuiditas yang cukup berat. Dampak dari ketidakpastian iklim investasi ini terekam jelas pada pergerakan data portofolio perbankan kita:
+Modul analisis risiko finansial tersedia di `src/risk_engine.py`:
 
-*   **Sentimen Fiskal & Aksi Jual Asing (*Foreign Outflows*)**: Kekhawatiran awal pelaku pasar global mengenai defisit APBN terkait pendanaan program prioritas nasional (seperti Makan Bergizi Gratis) memicu kenaikan *yield* obligasi dan pelemahan Rupiah. Investor institusi asing melakukan aksi jual bersih (*net sell*) masif. Saham *Big Four* sebagai penggerak indeks utama menjadi sasaran penarikan dana asing terdalam (tercermin dari *Maximum Drawdown* BBNI yang mencapai `-66.30%` dan BMRI `-54.26%`).
-*   **Kebijakan Suku Bunga Tinggi (*BI-Rate*)**: Bank Indonesia terpaksa mempertahankan suku bunga acuan di level tinggi (kisaran 6.00% - 6.25%) sepanjang 2025 hingga 2026 demi membentengi nilai tukar Rupiah. Kebijakan moneter ketat ini meningkatkan biaya dana (*Cost of Funds*) perbankan, menekan pertumbuhan kredit, serta mempersempit margin bunga bersih (*NIM compression*).
-*   **Kenaikan NPL Sektor Mikro**: Pasca-berakhirnya relaksasi restrukturisasi kredit OJK (Maret 2024), rasio kredit macet industri mulai merangkak naik. Efek terberat dirasakan oleh **BBRI** yang fokus pada kredit mikro dan ultra-mikro (NPL Gross berada di level ~3.1%). Peningkatan NPL memaksa BBRI mengalokasikan pencadangan (*provisions*) yang sangat besar, mengoreksi laba bersih, dan menjatuhkan harga sahamnya ke area Rp 2.970 per Juli 2026.
-*   **BBCA Sebagai Pelindung Portofolio (*Safe Haven*)**: Di tengah kejatuhan sektor perbankan, BBCA membuktikan statusnya sebagai *safe haven* dengan mencatatkan drawdown terendah (`-51.79%`) dan performa risiko terbaik (Sharpe Ratio `0.211`). Keunggulan CASA (dana murah > 80%) melindungi BBCA dari guncangan biaya dana, sehingga posisinya relatif aman dibandingkan bank-bank BUMN.
+```python
+from src.risk_engine import BankRiskEngine
+
+engine = BankRiskEngine()
+var_es_df = engine.calculate_var_es(alpha=0.95)
+print("=== Daily VaR & Expected Shortfall (95%) ===")
+print(var_es_df)
+```
+
+Jalankan automated test:
+```bash
+pytest tests/
+```
 
 ---
 
 ## 🎯 Kesimpulan & Rekomendasi Portofolio
 
-Berdasarkan analisis kuantitatif dan fundamental di atas, rekomendasi alokasi portofolio perbankan dirumuskan sebagai berikut:
-
 1.  **Jangkar Portofolio (Defensif)**: **BBCA** direkomendasikan sebagai porsi penahan guncangan portofolio terbesar (*core holding*). Karakteristik volatilitas rendah, drawdown minimal, dan Beta defensif (0.710) terbukti efektif menjaga nilai aset portofolio tetap tangguh saat pasar makroekonomi sedang lesu.
 2.  **Mesin Return (Growth)**: **BMRI** dan **BBRI** direkomendasikan untuk dibeli secara agresif saat siklus pemotongan suku bunga bank sentral dimulai atau ketika pertumbuhan ekonomi nasional sedang ekspansif guna mendongkrak return portofolio secara keseluruhan.
 3.  **Batas Diversifikasi Sektoral**: Karena korelasi Pearson antar bank besar ini cukup kuat (0.55 - 0.72), diversifikasi hanya di dalam kelompok Big Four tidak dapat memproteksi portofolio dari risiko kejatuhan pasar sistemik sektoral secara penuh (seperti krisis pandemi awal 2020). Investor direkomendasikan untuk memasangkan portofolio perbankan ini dengan sektor non-siklikal yang korelasinya rendah (seperti Consumer Staples atau Telekomunikasi).
+
+---
+
+## 🚀 Cara Menjalankan
+
+1. **Pasang Dependensi**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. **Eksekusi Notebook**:
+   ```bash
+   jupyter notebook notebook.ipynb
+   ```
+
+---
+*Indonesian Big Four Banks Risk Analytics Project.*
