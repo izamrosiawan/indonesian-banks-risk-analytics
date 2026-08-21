@@ -350,6 +350,25 @@ body {
   }
 }
 
+.notebook-figure-wrap {
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border-hairline);
+  background-color: var(--bg-page);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.notebook-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+}
+
 .column-card {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-hairline);

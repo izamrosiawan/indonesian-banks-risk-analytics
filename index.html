@@ -61,6 +61,36 @@
       </div>
     </section>
 
+    <!-- Section: Notebook Seaborn Figure Exports (Drawdown & VaR) -->
+    <section class="editorial-section">
+      <div class="section-heading-group">
+        <h2 class="section-title">Visualisasi Notebook Empiris (Seaborn Exports)</h2>
+        <p class="section-desc">Hasil analisis Drawdown historis dan distribusi risiko Value at Risk (VaR 95%) dari Jupyter Notebook</p>
+      </div>
+
+      <div class="two-column-layout">
+        <div class="column-card">
+          <div class="card-caption">
+            <h3 class="caption-title">Analisis Historical Drawdown (2019-2024)</h3>
+            <p class="caption-sub">Kedalaman kejatuhan harga saham 4 bank saat krisis pandemi (Seaborn 300 DPI)</p>
+          </div>
+          <div class="notebook-figure-wrap">
+            <img src="images/drawdowns.png" alt="Historical Drawdown Analysis" class="notebook-img">
+          </div>
+        </div>
+
+        <div class="column-card">
+          <div class="card-caption">
+            <h3 class="caption-title">Distribusi Value at Risk (VaR 95%)</h3>
+            <p class="caption-sub">Batas potensi kerugian harian maksimum pada tingkat kepercayaan 95%</p>
+          </div>
+          <div class="notebook-figure-wrap">
+            <img src="images/returns_vs_var.png" alt="Returns vs Value at Risk" class="notebook-img">
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Main Chart Section: Interactive Horizon Slicing -->
     <section class="editorial-section">
       <div class="section-topbar">
@@ -68,17 +98,14 @@
           <h2 class="section-title">Pertumbuhan Nilai Investasi Kumulatif</h2>
           <p class="section-desc">Normalisasi harga saham ke basis 100 pada awal periode observasi</p>
         </div>
-
         <div class="controls-toolbar">
           <!-- Time Horizon Selector -->
           <div class="segmented-control" id="period-selector">
             <button type="button" class="seg-item active" data-period="ALL">Semua (11 Th)</button>
             <button type="button" class="seg-item" data-period="5Y">5 Tahun</button>
             <button type="button" class="seg-item" data-period="3Y">3 Tahun</button>
-            <button type="button" class="seg-item" data-period="COVID">Krisis Pandemi (2020)</button>
-            <button type="button" class="seg-item" data-period="RECOVERY">Pemulihan (2021-2026)</button>
+            <button type="button" class="seg-item" data-period="1Y">1 Tahun</button>
           </div>
-
           <!-- Asset Isolation Filters -->
           <div class="filter-pills" id="asset-filters">
             <button type="button" class="pill-btn active" data-filter="all">Semua</button>
