@@ -309,17 +309,6 @@ body {
   font-weight: 600;
 }
 
-/* Live Inspection Readout Strip */
-.live-inspection-bar {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-hairline);
-  border-radius: var(--radius-md);
-  padding: 12px 20px;
-  font-size: 12px;
-  color: var(--color-blue);
-  box-shadow: var(--shadow-subtle);
-}
-
 /* Chart Stages */
 .chart-stage {
   background-color: var(--bg-surface);
