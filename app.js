@@ -57,20 +57,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function getSeabornTheme() {
+  function getThemeColors() {
     const isDark = currentTheme === 'dark';
     return {
-      textColor: isDark ? '#94a3b8' : '#333333',
-      titleColor: isDark ? '#f8fafc' : '#111111',
-      gridColor: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.08)',
+      textColor: isDark ? '#94a3b8' : '#71717a',
+      titleColor: isDark ? '#f8fafc' : '#18181b',
+      gridColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
       tooltipBg: isDark ? '#101726' : '#ffffff',
-      tooltipBorder: isDark ? '#1e293b' : '#d4d4d8',
-      // Seaborn Matplotlib exact colors for 4 banks
-      bbca: '#1f77b4',
-      bbri: '#ff7f0e',
-      bmri: '#2ca02c',
-      bbni: '#d62728',
-      ew: '#7f7f7f'
+      tooltipBorder: isDark ? '#1e293b' : '#e4e4e7',
+      primaryBlue: isDark ? '#38bdf8' : '#2563eb',
+      emerald: isDark ? '#10b981' : '#047857',
+      amber: isDark ? '#fbbf24' : '#b45309',
+      red: isDark ? '#f87171' : '#b91c1c'
     };
   }
 
@@ -78,18 +76,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('mainChart');
     if (!canvas) return;
 
-    const st = getSeabornTheme();
+    const tc = getThemeColors();
 
     mainChart = new Chart(canvas.getContext('2d'), {
       type: 'line',
       data: {
         labels: rawData.dates,
         datasets: [
-          { label: 'BBCA', data: rawData.normalized.BBCA, borderColor: st.bbca, borderWidth: 2.5, pointRadius: 3, tension: 0.1 },
-          { label: 'BBRI', data: rawData.normalized.BBRI, borderColor: st.bbri, borderWidth: 2.5, pointRadius: 3, tension: 0.1 },
-          { label: 'BMRI', data: rawData.normalized.BMRI, borderColor: st.bmri, borderWidth: 2.5, pointRadius: 3, tension: 0.1 },
-          { label: 'BBNI', data: rawData.normalized.BBNI, borderColor: st.bbni, borderWidth: 2.5, pointRadius: 3, tension: 0.1 },
-          { label: 'Portofolio Rata', data: rawData.normalized.EquallyWeighted, borderColor: st.ew, borderWidth: 2, borderDash: [5, 5], pointRadius: 2, tension: 0.1 }
+          { label: 'BBCA', data: rawData.normalized.BBCA, borderColor: tc.emerald, borderWidth: 2.5, pointRadius: 3, tension: 0.15 },
+          { label: 'BBRI', data: rawData.normalized.BBRI, borderColor: tc.amber, borderWidth: 2.5, pointRadius: 3, tension: 0.15 },
+          { label: 'BMRI', data: rawData.normalized.BMRI, borderColor: tc.primaryBlue, borderWidth: 2.5, pointRadius: 3, tension: 0.15 },
+          { label: 'BBNI', data: rawData.normalized.BBNI, borderColor: tc.red, borderWidth: 2.5, pointRadius: 3, tension: 0.15 },
+          { label: 'Portofolio Rata', data: rawData.normalized.EquallyWeighted, borderColor: tc.textColor, borderWidth: 2, borderDash: [5, 5], pointRadius: 2, tension: 0.15 }
         ]
       },
       options: {
@@ -99,21 +97,21 @@ document.addEventListener('DOMContentLoaded', () => {
         plugins: {
           legend: {
             position: 'top',
-            labels: { color: st.titleColor, font: { family: 'Plus Jakarta Sans', size: 11, weight: '500' }, boxWidth: 10, boxHeight: 10 }
+            labels: { color: tc.titleColor, font: { family: 'Plus Jakarta Sans', size: 11, weight: '500' }, boxWidth: 10, boxHeight: 10 }
           },
           tooltip: {
-            backgroundColor: st.tooltipBg,
-            titleColor: st.titleColor,
-            bodyColor: st.textColor,
-            borderColor: st.tooltipBorder,
+            backgroundColor: tc.tooltipBg,
+            titleColor: tc.titleColor,
+            bodyColor: tc.textColor,
+            borderColor: tc.tooltipBorder,
             borderWidth: 1,
             titleFont: { family: 'JetBrains Mono', size: 12 },
             bodyFont: { family: 'JetBrains Mono', size: 11 }
           }
         },
         scales: {
-          x: { grid: { display: true, color: st.gridColor, borderDash: [3, 3] }, ticks: { color: st.textColor, font: { family: 'JetBrains Mono', size: 10 } } },
-          y: { grid: { display: true, color: st.gridColor, borderDash: [3, 3] }, ticks: { color: st.textColor, font: { family: 'JetBrains Mono', size: 10 }, callback: (v) => `Rp ${v}` } }
+          x: { grid: { display: false }, ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } } },
+          y: { grid: { color: tc.gridColor }, ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 }, callback: (v) => `Rp ${v}` } }
         }
       }
     });
@@ -173,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('frontierCanvas');
     if (!canvas) return;
 
-    const st = getSeabornTheme();
+    const tc = getThemeColors();
 
     const frontierCurve = [
       { x: 24.12, y: 10.02 }, { x: 24.30, y: 10.10 }, { x: 24.81, y: 10.14 },
@@ -189,17 +187,17 @@ document.addEventListener('DOMContentLoaded', () => {
             label: 'Efficient Frontier Curve',
             data: frontierCurve,
             showLine: true,
-            borderColor: st.bbca,
+            borderColor: tc.primaryBlue,
             borderWidth: 2.5,
             pointRadius: 4,
-            pointBackgroundColor: st.bbca,
+            pointBackgroundColor: tc.primaryBlue,
             fill: false
           },
           {
             label: 'Max Sharpe (Return 10.14%, Vol 24.81%)',
             data: [{ x: 24.81, y: 10.14 }],
             pointRadius: 8,
-            pointBackgroundColor: st.bmri,
+            pointBackgroundColor: tc.emerald,
             pointBorderColor: '#ffffff',
             pointBorderWidth: 2
           },
@@ -207,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
             label: 'Min Volatility (Return 10.02%, Vol 24.12%)',
             data: [{ x: 24.12, y: 10.02 }],
             pointRadius: 8,
-            pointBackgroundColor: st.bbri,
+            pointBackgroundColor: tc.primaryBlue,
             pointBorderColor: '#ffffff',
             pointBorderWidth: 2
           }
@@ -220,13 +218,13 @@ document.addEventListener('DOMContentLoaded', () => {
         plugins: {
           legend: {
             position: 'top',
-            labels: { color: st.titleColor, font: { family: 'Plus Jakarta Sans', size: 10 } }
+            labels: { color: tc.titleColor, font: { family: 'Plus Jakarta Sans', size: 10 } }
           },
           tooltip: {
-            backgroundColor: st.tooltipBg,
-            titleColor: st.titleColor,
-            bodyColor: st.textColor,
-            borderColor: st.tooltipBorder,
+            backgroundColor: tc.tooltipBg,
+            titleColor: tc.titleColor,
+            bodyColor: tc.textColor,
+            borderColor: tc.tooltipBorder,
             borderWidth: 1,
             callbacks: {
               label: (ctx) => ` Vol: ${ctx.raw.x}% | Return: ${ctx.raw.y}%`
@@ -234,8 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         },
         scales: {
-          x: { title: { display: true, text: 'Volatilitas Tahunan (%)', color: st.textColor }, grid: { color: st.gridColor, borderDash: [3, 3] }, ticks: { color: st.textColor, font: { family: 'JetBrains Mono', size: 10 } } },
-          y: { title: { display: true, text: 'Imbal Hasil Ekspektasi (%)', color: st.textColor }, grid: { color: st.gridColor, borderDash: [3, 3] }, ticks: { color: st.textColor, font: { family: 'JetBrains Mono', size: 10 } } }
+          x: { title: { display: true, text: 'Volatilitas Tahunan (%)', color: tc.textColor }, grid: { color: tc.gridColor }, ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } } },
+          y: { title: { display: true, text: 'Imbal Hasil Ekspektasi (%)', color: tc.textColor }, grid: { color: tc.gridColor }, ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } } }
         }
       }
     });
