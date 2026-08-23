@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             label: 'BBCA',
             data: rawData.normalized.BBCA,
-            borderColor: '#1e40af',
+            borderColor: '#1d4ed8',
             borderWidth: 2.5,
             pointRadius: 0,
             pointHoverRadius: 5,
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             label: 'BBRI',
             data: rawData.normalized.BBRI,
-            borderColor: '#b45309',
+            borderColor: '#d97706',
             borderWidth: 2,
             pointRadius: 0,
             pointHoverRadius: 5,
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             label: 'BMRI',
             data: rawData.normalized.BMRI,
-            borderColor: '#0f766e',
+            borderColor: '#0d9488',
             borderWidth: 2,
             pointRadius: 0,
             pointHoverRadius: 5,
@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             label: 'BBNI',
             data: rawData.normalized.BBNI,
-            borderColor: '#be123c',
+            borderColor: '#7c3aed',
             borderWidth: 2,
             pointRadius: 0,
             pointHoverRadius: 5,
@@ -195,10 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
             label: 'Efficient Frontier',
             data: frontierCurve,
             showLine: true,
-            borderColor: '#1e40af',
+            borderColor: '#1d4ed8',
             borderWidth: 2,
             pointRadius: 4,
-            pointBackgroundColor: '#1e40af',
+            pointBackgroundColor: '#1d4ed8',
             fill: false,
             tension: 0.3
           },
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
             label: 'Min Volatilitas (88.5% BBCA + 11.5% BMRI)',
             data: [{ x: 24.12, y: 10.02 }],
             pointRadius: 7,
-            pointBackgroundColor: '#1e40af',
+            pointBackgroundColor: '#0d9488',
             pointBorderColor: '#ffffff',
             pointBorderWidth: 2
           }

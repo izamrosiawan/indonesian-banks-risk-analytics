@@ -21,12 +21,12 @@
   --border-subtle: #e5e7eb;
   --border-strong: #d1d5db;
   
-  /* Refined Institutional Color Palette (Muted, Distinct, Zero Neon) */
-  --color-bbca: #1e40af;       /* Deep Navy Blue */
-  --color-bmri: #0f766e;       /* Deep Teal Slate */
-  --color-bbri: #b45309;       /* Muted Amber */
-  --color-bbni: #be123c;       /* Muted Crimson */
-  --color-port: #475569;       /* Slate Charcoal */
+  /* Okabe-Ito & ColorBrewer Data Visualization Standards (Colorblind Safe & No Semantic Loss Bias) */
+  --color-bbca: #1d4ed8;       /* Cobalt Blue */
+  --color-bbri: #d97706;       /* Warm Ochre */
+  --color-bmri: #0d9488;       /* Bluish Teal */
+  --color-bbni: #7c3aed;       /* Deep Violet (Free from negative loss semantic bias) */
+  --color-port: #475569;       /* Slate Charcoal (Neutral Benchmark) */
   
   --color-positive: #047857;   /* Forest Green */
   --color-negative: #b91c1c;   /* Deep Red */
