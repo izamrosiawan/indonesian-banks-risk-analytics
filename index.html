@@ -36,7 +36,7 @@
   <main class="main-wrapper">
     
     <!-- Overview Header -->
-    <section class="overview-header">
+    <section class="overview-header reveal-on-scroll">
       <span class="overview-tag">Riset Kuantitatif & Keuangan Empiris</span>
       <h1 class="overview-title">
         Analisis Profil Risiko, Imbal Hasil, dan Optimasi Portofolio Empat Bank Terbesar di Indonesia
@@ -47,34 +47,34 @@
     </section>
 
     <!-- Key Metrics 4-Column Grid -->
-    <section class="stat-cards-grid">
+    <section class="stat-cards-grid reveal-on-scroll">
       <div class="stat-card">
         <span class="stat-card-label">Return Tahunan BBCA</span>
-        <span class="stat-card-value" style="color: var(--color-positive);" id="kpi-bbca-ret">+10.14%</span>
+        <span class="stat-card-value font-mono" style="color: var(--color-positive);" id="kpi-bbca-ret" data-target="10.14" data-prefix="+" data-suffix="%" data-decimals="2">+10.14%</span>
         <p class="stat-card-note">Pertumbuhan modal +213.3% sejak 2015 dengan volatilitas terendah.</p>
       </div>
 
       <div class="stat-card">
         <span class="stat-card-label">Portofolio Max Sharpe</span>
-        <span class="stat-card-value" style="color: var(--color-bbca);" id="kpi-opt-sharpe">0.207</span>
+        <span class="stat-card-value font-mono" style="color: var(--color-bbca);" id="kpi-opt-sharpe" data-target="0.207" data-prefix="" data-suffix="" data-decimals="3">0.207</span>
         <p class="stat-card-note">Alokasi optimal: 72.4% BBCA dan 27.6% BMRI.</p>
       </div>
 
       <div class="stat-card">
         <span class="stat-card-label">Volatilitas Portofolio Rata</span>
-        <span class="stat-card-value font-mono" id="kpi-ew-vol">25.70%</span>
+        <span class="stat-card-value font-mono" id="kpi-ew-vol" data-target="25.70" data-prefix="" data-suffix="%" data-decimals="2">25.70%</span>
         <p class="stat-card-note">Diversifikasi berhasil meredam risiko spesifik emiten tunggal.</p>
       </div>
 
       <div class="stat-card">
         <span class="stat-card-label">Drawdown Maksimum</span>
-        <span class="stat-card-value font-mono" style="color: var(--color-negative);" id="kpi-mdd-val">-48.37%</span>
+        <span class="stat-card-value font-mono" style="color: var(--color-negative);" id="kpi-mdd-val" data-target="48.37" data-prefix="-" data-suffix="%" data-decimals="2">-48.37%</span>
         <p class="stat-card-note">Titik penurunan terdalam saat krisis pandemi global Maret 2020.</p>
       </div>
     </section>
 
     <!-- Section 1: Trajectory Chart Panel -->
-    <section class="content-section">
+    <section class="content-section reveal-on-scroll">
       <div class="section-title-wrap">
         <h2 class="section-h2">1. Trajektori Pertumbuhan Nilai Investasi (Basis 100)</h2>
         <p class="section-p">Normalisasi harga penutupan saham ke basis 100 pada awal periode observasi (Januari 2015).</p>
@@ -118,7 +118,7 @@
     </section>
 
     <!-- Section 2: Markowitz Frontier & Dynamic Simulator -->
-    <section class="content-section">
+    <section class="content-section reveal-on-scroll">
       <div class="section-title-wrap">
         <h2 class="section-h2">2. Teori Portofolio Markowitz & Simulator Alokasi</h2>
         <p class="section-p">Menghitung imbal hasil ekspektasi dan risiko gabungan menggunakan matriks kovarians terrealisasi.</p>
@@ -234,7 +234,7 @@
     </section>
 
     <!-- Section 3: Data Tables -->
-    <section class="content-section">
+    <section class="content-section reveal-on-scroll">
       <div class="section-title-wrap">
         <h2 class="section-h2">3. Diagnostik Risiko Ekor & Matriks Fundamental</h2>
         <p class="section-p">Ringkasan Value at Risk (VaR 95%), Expected Shortfall, dan uji asumsi klasik.</p>

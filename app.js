@@ -25,9 +25,61 @@ document.addEventListener('DOMContentLoaded', () => {
   let mainChart = null;
   let frontierChart = null;
 
+  initScrollReveal();
+  initAnimatedCounters();
   initMainChart();
   initFrontierChart();
   initPortfolioSimulator();
+
+  function initScrollReveal() {
+    const reveals = document.querySelectorAll('.reveal-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+        }
+      });
+    }, { threshold: 0.08 });
+
+    reveals.forEach(el => observer.observe(el));
+  }
+
+  function initAnimatedCounters() {
+    const counters = document.querySelectorAll('.stat-card-value[data-target]');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    counters.forEach(c => observer.observe(c));
+  }
+
+  function animateCounter(el) {
+    const target = parseFloat(el.getAttribute('data-target'));
+    const decimals = parseInt(el.getAttribute('data-decimals') || '2', 10);
+    const prefix = el.getAttribute('data-prefix') || '';
+    const suffix = el.getAttribute('data-suffix') || '';
+    const duration = 1200;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1.0);
+      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const val = target * ease;
+      el.textContent = `${prefix}${val.toFixed(decimals)}${suffix}`;
+      if (progress < 1.0) {
+        requestAnimationFrame(update);
+      } else {
+        el.textContent = `${prefix}${target.toFixed(decimals)}${suffix}`;
+      }
+    }
+    requestAnimationFrame(update);
+  }
 
   function initMainChart() {
     const canvas = document.getElementById('mainChart');
