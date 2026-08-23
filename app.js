@@ -95,8 +95,8 @@ document.addEventListener('DOMContentLoaded', () => {
             data: rawData.normalized.BBCA,
             borderColor: '#1d4ed8',
             borderWidth: 2.5,
-            pointRadius: 0,
-            pointHoverRadius: 5,
+            pointRadius: 3,
+            pointHoverRadius: 6,
             tension: 0.2
           },
           {
@@ -104,8 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
             data: rawData.normalized.BBRI,
             borderColor: '#d97706',
             borderWidth: 2,
-            pointRadius: 0,
-            pointHoverRadius: 5,
+            pointRadius: 3,
+            pointHoverRadius: 6,
             tension: 0.2
           },
           {
@@ -113,8 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
             data: rawData.normalized.BMRI,
             borderColor: '#0d9488',
             borderWidth: 2,
-            pointRadius: 0,
-            pointHoverRadius: 5,
+            pointRadius: 3,
+            pointHoverRadius: 6,
             tension: 0.2
           },
           {
@@ -122,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
             data: rawData.normalized.BBNI,
             borderColor: '#7c3aed',
             borderWidth: 2,
-            pointRadius: 0,
-            pointHoverRadius: 5,
+            pointRadius: 3,
+            pointHoverRadius: 6,
             tension: 0.2
           },
           {
@@ -132,8 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
             borderColor: '#475569',
             borderWidth: 1.8,
             borderDash: [5, 5],
-            pointRadius: 0,
-            pointHoverRadius: 4,
+            pointRadius: 3,
+            pointHoverRadius: 6,
             tension: 0.2
           }
         ]
@@ -276,6 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         responsive: true,
         maintainAspectRatio: false,
         animation: { duration: 600, easing: 'easeOutQuart' },
+        interaction: { mode: 'nearest', intersect: false },
         plugins: {
           legend: {
             position: 'top',
