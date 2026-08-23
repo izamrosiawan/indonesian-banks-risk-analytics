@@ -33,14 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('mainChart');
     if (!canvas) return;
 
-    const ctx = canvas.getContext('2d');
-
-    // Create subtle glow gradients
-    const gradBBCA = ctx.createLinearGradient(0, 0, 0, 350);
-    gradBBCA.addColorStop(0, 'rgba(59, 130, 246, 0.25)');
-    gradBBCA.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
-
-    mainChart = new Chart(ctx, {
+    mainChart = new Chart(canvas.getContext('2d'), {
       type: 'line',
       data: {
         labels: rawData.dates,
@@ -48,100 +41,83 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             label: 'BBCA',
             data: rawData.normalized.BBCA,
-            borderColor: '#3b82f6',
-            backgroundColor: gradBBCA,
-            fill: true,
+            borderColor: '#1e40af',
             borderWidth: 2.5,
             pointRadius: 0,
-            pointHoverRadius: 6,
-            pointHoverBackgroundColor: '#3b82f6',
-            pointHoverBorderColor: '#ffffff',
-            pointHoverBorderWidth: 2,
-            tension: 0.25
+            pointHoverRadius: 5,
+            tension: 0.2
           },
           {
             label: 'BBRI',
             data: rawData.normalized.BBRI,
-            borderColor: '#f59e0b',
+            borderColor: '#b45309',
             borderWidth: 2,
             pointRadius: 0,
             pointHoverRadius: 5,
-            pointHoverBackgroundColor: '#f59e0b',
-            pointHoverBorderColor: '#ffffff',
-            pointHoverBorderWidth: 2,
-            tension: 0.25
+            tension: 0.2
           },
           {
             label: 'BMRI',
             data: rawData.normalized.BMRI,
-            borderColor: '#14b8a6',
+            borderColor: '#0f766e',
             borderWidth: 2,
             pointRadius: 0,
             pointHoverRadius: 5,
-            pointHoverBackgroundColor: '#14b8a6',
-            pointHoverBorderColor: '#ffffff',
-            pointHoverBorderWidth: 2,
-            tension: 0.25
+            tension: 0.2
           },
           {
             label: 'BBNI',
             data: rawData.normalized.BBNI,
-            borderColor: '#f43f5e',
+            borderColor: '#be123c',
             borderWidth: 2,
             pointRadius: 0,
             pointHoverRadius: 5,
-            pointHoverBackgroundColor: '#f43f5e',
-            pointHoverBorderColor: '#ffffff',
-            pointHoverBorderWidth: 2,
-            tension: 0.25
+            tension: 0.2
           },
           {
             label: 'Portofolio Rata',
             data: rawData.normalized.EquallyWeighted,
-            borderColor: '#818cf8',
-            borderWidth: 2,
+            borderColor: '#475569',
+            borderWidth: 1.8,
             borderDash: [5, 5],
             pointRadius: 0,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: '#818cf8',
-            pointHoverBorderColor: '#ffffff',
-            pointHoverBorderWidth: 2,
-            tension: 0.25
+            pointHoverRadius: 4,
+            tension: 0.2
           }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 700, easing: 'easeOutQuart' },
+        animation: { duration: 600, easing: 'easeOutQuart' },
         interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: '#0d121d',
-            titleColor: '#ffffff',
-            bodyColor: '#94a3b8',
-            borderColor: 'rgba(255, 255, 255, 0.15)',
+            backgroundColor: '#ffffff',
+            titleColor: '#111827',
+            bodyColor: '#4b5563',
+            borderColor: '#e5e7eb',
             borderWidth: 1,
-            padding: 14,
-            boxPadding: 6,
+            padding: 12,
+            boxPadding: 4,
             usePointStyle: true,
-            titleFont: { family: 'JetBrains Mono', size: 13, weight: '700' },
-            bodyFont: { family: 'JetBrains Mono', size: 12 },
+            titleFont: { family: 'JetBrains Mono', size: 12, weight: '700' },
+            bodyFont: { family: 'JetBrains Mono', size: 11 },
             callbacks: {
-              label: (ctx) => `  ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}`
+              label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}`
             }
           }
         },
         scales: {
           x: {
             grid: { display: false },
-            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 11 } }
+            ticks: { color: '#6b7280', font: { family: 'JetBrains Mono', size: 11 } }
           },
           y: {
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+            grid: { color: '#f1f3f5' },
             ticks: {
-              color: '#64748b',
+              color: '#6b7280',
               font: { family: 'JetBrains Mono', size: 11 },
               callback: (v) => `${v}`
             }
@@ -154,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function initChartFilters() {
-    const periodBtns = document.querySelectorAll('#period-selector button');
+    const periodBtns = document.querySelectorAll('#period-selector .segment-btn');
     periodBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         periodBtns.forEach(b => b.classList.remove('active'));
@@ -164,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    const filterBtns = document.querySelectorAll('#asset-filters button');
+    const filterBtns = document.querySelectorAll('#asset-filters .asset-pill');
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
@@ -219,69 +195,69 @@ document.addEventListener('DOMContentLoaded', () => {
             label: 'Efficient Frontier',
             data: frontierCurve,
             showLine: true,
-            borderColor: '#38bdf8',
-            borderWidth: 2.5,
+            borderColor: '#1e40af',
+            borderWidth: 2,
             pointRadius: 4,
-            pointBackgroundColor: '#38bdf8',
+            pointBackgroundColor: '#1e40af',
             fill: false,
-            tension: 0.35
+            tension: 0.3
           },
           {
             label: 'Max Sharpe (72.4% BBCA + 27.6% BMRI)',
             data: [{ x: 24.81, y: 10.14 }],
-            pointRadius: 8,
-            pointBackgroundColor: '#34d399',
+            pointRadius: 7,
+            pointBackgroundColor: '#047857',
             pointBorderColor: '#ffffff',
-            pointBorderWidth: 2.5
+            pointBorderWidth: 2
           },
           {
             label: 'Min Volatilitas (88.5% BBCA + 11.5% BMRI)',
             data: [{ x: 24.12, y: 10.02 }],
-            pointRadius: 8,
-            pointBackgroundColor: '#60a5fa',
+            pointRadius: 7,
+            pointBackgroundColor: '#1e40af',
             pointBorderColor: '#ffffff',
-            pointBorderWidth: 2.5
+            pointBorderWidth: 2
           }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 700, easing: 'easeOutQuart' },
+        animation: { duration: 600, easing: 'easeOutQuart' },
         plugins: {
           legend: {
             position: 'top',
             labels: {
-              color: '#ffffff',
-              font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' },
-              boxWidth: 10,
-              boxHeight: 10
+              color: '#111827',
+              font: { family: 'Plus Jakarta Sans', size: 10.5, weight: '600' },
+              boxWidth: 8,
+              boxHeight: 8
             }
           },
           tooltip: {
-            backgroundColor: '#0d121d',
-            titleColor: '#ffffff',
-            bodyColor: '#94a3b8',
-            borderColor: 'rgba(255, 255, 255, 0.15)',
+            backgroundColor: '#ffffff',
+            titleColor: '#111827',
+            bodyColor: '#4b5563',
+            borderColor: '#e5e7eb',
             borderWidth: 1,
-            padding: 12,
-            titleFont: { family: 'JetBrains Mono', size: 12, weight: '700' },
-            bodyFont: { family: 'JetBrains Mono', size: 11 },
+            padding: 10,
+            titleFont: { family: 'JetBrains Mono', size: 11, weight: '700' },
+            bodyFont: { family: 'JetBrains Mono', size: 10.5 },
             callbacks: {
-              label: (ctx) => `  Volatilitas: ${ctx.raw.x}% | Return: ${ctx.raw.y}%`
+              label: (ctx) => ` Vol: ${ctx.raw.x}% | Return: ${ctx.raw.y}%`
             }
           }
         },
         scales: {
           x: {
-            title: { display: true, text: 'Volatilitas Tahunan (%)', color: '#64748b', font: { size: 11 } },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 11 } }
+            title: { display: true, text: 'Volatilitas Tahunan (%)', color: '#6b7280', font: { size: 10.5 } },
+            grid: { color: '#f1f3f5' },
+            ticks: { color: '#6b7280', font: { family: 'JetBrains Mono', size: 10 } }
           },
           y: {
-            title: { display: true, text: 'Imbal Hasil Ekspektasi (%)', color: '#64748b', font: { size: 11 } },
-            grid: { color: 'rgba(255, 255, 255, 0.05)' },
-            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 11 } }
+            title: { display: true, text: 'Imbal Hasil Ekspektasi (%)', color: '#6b7280', font: { size: 10.5 } },
+            grid: { color: '#f1f3f5' },
+            ticks: { color: '#6b7280', font: { family: 'JetBrains Mono', size: 10 } }
           }
         }
       }
@@ -313,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const allocEl = document.getElementById('sim-total-alloc');
       if (allocEl) {
         allocEl.textContent = `${(totalW * 100).toFixed(0)}%`;
-        allocEl.style.color = Math.abs(totalW - 1.0) < 0.01 ? '#34d399' : '#f43f5e';
+        allocEl.style.color = Math.abs(totalW - 1.0) < 0.01 ? 'var(--color-positive)' : 'var(--color-negative)';
       }
 
       let multReturn = 1.0;
