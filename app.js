@@ -20,97 +20,129 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const expReturns = { BBCA: 0.142, BBRI: 0.115, BMRI: 0.118, BBNI: 0.082 };
 
-  let currentTheme = 'light';
   let activePeriod = 'ALL';
   let activeFilter = 'all';
   let mainChart = null;
   let frontierChart = null;
 
-  initThemeToggle();
   initMainChart();
   initFrontierChart();
   initPortfolioSimulator();
-
-  function initThemeToggle() {
-    const themeBtn = document.getElementById('btn-theme-toggle');
-    if (!themeBtn) return;
-
-    themeBtn.addEventListener('click', () => {
-      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', currentTheme);
-      updateAllChartsTheme();
-    });
-  }
-
-  function getThemeColors() {
-    const isDark = currentTheme === 'dark';
-    return {
-      textColor: isDark ? '#8b949e' : '#6b7280',
-      titleColor: isDark ? '#f0f6fc' : '#111827',
-      gridColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)',
-      tooltipBg: isDark ? '#161b22' : '#ffffff',
-      tooltipBorder: isDark ? '#30363d' : '#e5e7eb',
-      colorBBCA: isDark ? '#60a5fa' : '#1e40af',
-      colorBBRI: isDark ? '#fbbf24' : '#b45309',
-      colorBMRI: isDark ? '#2dd4bf' : '#0f766e',
-      colorBBNI: isDark ? '#fb7185' : '#be123c',
-      colorEW: isDark ? '#94a3b8' : '#475569',
-      emerald: isDark ? '#34d399' : '#047857',
-      blue: isDark ? '#60a5fa' : '#1d4ed8'
-    };
-  }
 
   function initMainChart() {
     const canvas = document.getElementById('mainChart');
     if (!canvas) return;
 
-    const tc = getThemeColors();
+    const ctx = canvas.getContext('2d');
 
-    mainChart = new Chart(canvas.getContext('2d'), {
+    // Create subtle glow gradients
+    const gradBBCA = ctx.createLinearGradient(0, 0, 0, 350);
+    gradBBCA.addColorStop(0, 'rgba(59, 130, 246, 0.25)');
+    gradBBCA.addColorStop(1, 'rgba(59, 130, 246, 0.0)');
+
+    mainChart = new Chart(ctx, {
       type: 'line',
       data: {
         labels: rawData.dates,
         datasets: [
-          { label: 'BBCA', data: rawData.normalized.BBCA, borderColor: tc.colorBBCA, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.2 },
-          { label: 'BBRI', data: rawData.normalized.BBRI, borderColor: tc.colorBBRI, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.2 },
-          { label: 'BMRI', data: rawData.normalized.BMRI, borderColor: tc.colorBMRI, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.2 },
-          { label: 'BBNI', data: rawData.normalized.BBNI, borderColor: tc.colorBBNI, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.2 },
-          { label: 'Portofolio Rata', data: rawData.normalized.EquallyWeighted, borderColor: tc.colorEW, borderWidth: 1.8, borderDash: [4, 4], pointRadius: 0, pointHoverRadius: 4, tension: 0.2 }
+          {
+            label: 'BBCA',
+            data: rawData.normalized.BBCA,
+            borderColor: '#3b82f6',
+            backgroundColor: gradBBCA,
+            fill: true,
+            borderWidth: 2.5,
+            pointRadius: 0,
+            pointHoverRadius: 6,
+            pointHoverBackgroundColor: '#3b82f6',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 2,
+            tension: 0.25
+          },
+          {
+            label: 'BBRI',
+            data: rawData.normalized.BBRI,
+            borderColor: '#f59e0b',
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#f59e0b',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 2,
+            tension: 0.25
+          },
+          {
+            label: 'BMRI',
+            data: rawData.normalized.BMRI,
+            borderColor: '#14b8a6',
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#14b8a6',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 2,
+            tension: 0.25
+          },
+          {
+            label: 'BBNI',
+            data: rawData.normalized.BBNI,
+            borderColor: '#f43f5e',
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#f43f5e',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 2,
+            tension: 0.25
+          },
+          {
+            label: 'Portofolio Rata',
+            data: rawData.normalized.EquallyWeighted,
+            borderColor: '#818cf8',
+            borderWidth: 2,
+            borderDash: [5, 5],
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#818cf8',
+            pointHoverBorderColor: '#ffffff',
+            pointHoverBorderWidth: 2,
+            tension: 0.25
+          }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 600, easing: 'easeOutQuart' },
+        animation: { duration: 700, easing: 'easeOutQuart' },
         interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: { display: false },
           tooltip: {
-            backgroundColor: tc.tooltipBg,
-            titleColor: tc.titleColor,
-            bodyColor: tc.textColor,
-            borderColor: tc.tooltipBorder,
+            backgroundColor: '#0d121d',
+            titleColor: '#ffffff',
+            bodyColor: '#94a3b8',
+            borderColor: 'rgba(255, 255, 255, 0.15)',
             borderWidth: 1,
-            padding: 12,
-            boxPadding: 4,
+            padding: 14,
+            boxPadding: 6,
             usePointStyle: true,
-            titleFont: { family: 'JetBrains Mono', size: 12, weight: '600' },
-            bodyFont: { family: 'JetBrains Mono', size: 11 },
+            titleFont: { family: 'JetBrains Mono', size: 13, weight: '700' },
+            bodyFont: { family: 'JetBrains Mono', size: 12 },
             callbacks: {
-              label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}`
+              label: (ctx) => `  ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}`
             }
           }
         },
         scales: {
           x: {
             grid: { display: false },
-            ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } }
+            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 11 } }
           },
           y: {
-            grid: { color: tc.gridColor },
+            grid: { color: 'rgba(255, 255, 255, 0.05)' },
             ticks: {
-              color: tc.textColor,
-              font: { family: 'JetBrains Mono', size: 10 },
+              color: '#64748b',
+              font: { family: 'JetBrains Mono', size: 11 },
               callback: (v) => `${v}`
             }
           }
@@ -173,8 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('frontierCanvas');
     if (!canvas) return;
 
-    const tc = getThemeColors();
-
     const frontierCurve = [
       { x: 24.12, y: 10.02 }, { x: 24.30, y: 10.10 }, { x: 24.81, y: 10.14 },
       { x: 25.40, y: 11.20 }, { x: 26.20, y: 12.10 }, { x: 27.50, y: 13.00 },
@@ -189,80 +219,73 @@ document.addEventListener('DOMContentLoaded', () => {
             label: 'Efficient Frontier',
             data: frontierCurve,
             showLine: true,
-            borderColor: tc.blue,
-            borderWidth: 2,
-            pointRadius: 3,
-            pointBackgroundColor: tc.blue,
+            borderColor: '#38bdf8',
+            borderWidth: 2.5,
+            pointRadius: 4,
+            pointBackgroundColor: '#38bdf8',
             fill: false,
-            tension: 0.3
+            tension: 0.35
           },
           {
             label: 'Max Sharpe (72.4% BBCA + 27.6% BMRI)',
             data: [{ x: 24.81, y: 10.14 }],
-            pointRadius: 7,
-            pointBackgroundColor: tc.emerald,
+            pointRadius: 8,
+            pointBackgroundColor: '#34d399',
             pointBorderColor: '#ffffff',
-            pointBorderWidth: 2
+            pointBorderWidth: 2.5
           },
           {
             label: 'Min Volatilitas (88.5% BBCA + 11.5% BMRI)',
             data: [{ x: 24.12, y: 10.02 }],
-            pointRadius: 7,
-            pointBackgroundColor: tc.blue,
+            pointRadius: 8,
+            pointBackgroundColor: '#60a5fa',
             pointBorderColor: '#ffffff',
-            pointBorderWidth: 2
+            pointBorderWidth: 2.5
           }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 600, easing: 'easeOutQuart' },
+        animation: { duration: 700, easing: 'easeOutQuart' },
         plugins: {
           legend: {
             position: 'top',
             labels: {
-              color: tc.titleColor,
-              font: { family: 'Plus Jakarta Sans', size: 10.5, weight: '500' },
-              boxWidth: 8,
-              boxHeight: 8
+              color: '#ffffff',
+              font: { family: 'Plus Jakarta Sans', size: 11, weight: '600' },
+              boxWidth: 10,
+              boxHeight: 10
             }
           },
           tooltip: {
-            backgroundColor: tc.tooltipBg,
-            titleColor: tc.titleColor,
-            bodyColor: tc.textColor,
-            borderColor: tc.tooltipBorder,
+            backgroundColor: '#0d121d',
+            titleColor: '#ffffff',
+            bodyColor: '#94a3b8',
+            borderColor: 'rgba(255, 255, 255, 0.15)',
             borderWidth: 1,
-            padding: 10,
-            titleFont: { family: 'JetBrains Mono', size: 11, weight: '600' },
-            bodyFont: { family: 'JetBrains Mono', size: 10.5 },
+            padding: 12,
+            titleFont: { family: 'JetBrains Mono', size: 12, weight: '700' },
+            bodyFont: { family: 'JetBrains Mono', size: 11 },
             callbacks: {
-              label: (ctx) => ` Volatilitas: ${ctx.raw.x}% | Return: ${ctx.raw.y}%`
+              label: (ctx) => `  Volatilitas: ${ctx.raw.x}% | Return: ${ctx.raw.y}%`
             }
           }
         },
         scales: {
           x: {
-            title: { display: true, text: 'Volatilitas Tahunan (%)', color: tc.textColor, font: { size: 10.5 } },
-            grid: { color: tc.gridColor },
-            ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } }
+            title: { display: true, text: 'Volatilitas Tahunan (%)', color: '#64748b', font: { size: 11 } },
+            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 11 } }
           },
           y: {
-            title: { display: true, text: 'Imbal Hasil Ekspektasi (%)', color: tc.textColor, font: { size: 10.5 } },
-            grid: { color: tc.gridColor },
-            ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } }
+            title: { display: true, text: 'Imbal Hasil Ekspektasi (%)', color: '#64748b', font: { size: 11 } },
+            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+            ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 11 } }
           }
         }
       }
     });
-  }
-
-  function updateAllChartsTheme() {
-    if (mainChart) mainChart.destroy();
-    if (frontierChart) frontierChart.destroy();
-    initMainChart();
-    initFrontierChart();
   }
 
   function initPortfolioSimulator() {
@@ -290,7 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const allocEl = document.getElementById('sim-total-alloc');
       if (allocEl) {
         allocEl.textContent = `${(totalW * 100).toFixed(0)}%`;
-        allocEl.style.color = Math.abs(totalW - 1.0) < 0.01 ? 'var(--color-emerald)' : 'var(--color-red)';
+        allocEl.style.color = Math.abs(totalW - 1.0) < 0.01 ? '#34d399' : '#f43f5e';
       }
 
       let multReturn = 1.0;

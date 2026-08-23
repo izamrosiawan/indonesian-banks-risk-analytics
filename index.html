@@ -3,241 +3,255 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analisis Risiko & Portofolio Saham Bank Indonesia (BBCA, BBRI, BMRI, BBNI)</title>
-  <meta name="description" content="Kajian kuantitatif empiris risiko pasar, kurva Markowitz Efficient Frontier, dan simulasi alokasi portofolio saham perbankan Indonesia (2015-2026).">
+  <title>Indonesian Big Four Banks Risk Analytics & Markowitz Modern Portfolio Theory</title>
+  <meta name="description" content="Kajian komputasional empiris risiko pasar, kurva Markowitz Efficient Frontier, dan simulasi alokasi portofolio saham perbankan Indonesia (2015-2026).">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-  <!-- Editorial Top Masthead -->
-  <header class="site-header">
-    <div class="header-inner">
-      <div class="brand-badge-wrap">
-        <span class="brand-badge">Kajian Kuantitatif</span>
-        <span class="brand-title">IDX Big Four Banks (2015 - 2026)</span>
+  <!-- Floating Island Top Navigation -->
+  <header class="navbar-wrapper">
+    <nav class="navbar-island">
+      <div class="nav-brand-group">
+        <span class="nav-live-indicator"></span>
+        <span class="nav-brand-title">IDX QUANTITATIVE LAB</span>
+        <span class="nav-brand-tag">BBCA • BBRI • BMRI • BBNI</span>
       </div>
 
-      <div class="header-actions">
-        <a href="https://github.com/izamrosiawan/portfolio-hub" class="header-btn">
-          ← Portfolio Hub
+      <div class="nav-actions">
+        <a href="https://izamrosiawan.vercel.app" class="nested-pill-btn">
+          <span>Portfolio Hub</span>
+          <span class="btn-icon-circle">↗</span>
         </a>
-        <a href="https://github.com/izamrosiawan/indonesian-banks-risk-analytics" target="_blank" class="header-btn" rel="noreferrer">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span>Repository</span>
+        <a href="https://github.com/izamrosiawan/indonesian-banks-risk-analytics" target="_blank" class="nested-pill-btn" rel="noreferrer">
+          <span>GitHub</span>
+          <span class="btn-icon-circle">↗</span>
         </a>
-        <button type="button" class="theme-toggle-btn" id="btn-theme-toggle" aria-label="Ganti Tema">◐</button>
       </div>
-    </div>
+    </nav>
   </header>
 
-  <main class="page-body">
+  <main class="page-container">
     
-    <!-- Editorial Headline & Abstract -->
-    <section class="masthead-section">
-      <div class="masthead-meta">
-        <span>Kajian Empiris <strong>2.840 Hari Bursa</strong></span>
-        <span>•</span>
-        <span>Penulis: <strong>Izam Rosiawan</strong> (Telkom University)</span>
-        <span>•</span>
-        <span>Metrik: <strong>ADF, VaR 95%, Markowitz MVO</strong></span>
+    <!-- Hero Masthead Section -->
+    <section class="hero-masthead">
+      <div class="eyebrow-pill">
+        <span>RESEARCH MONOGRAPH // 2015 - 2026 (2.840 TRADING DAYS)</span>
       </div>
 
-      <h1 class="masthead-headline">
-        Dinamika Pertumbuhan 11 Tahun, Risiko Ekor Tebal, dan Optimalisasi Teori Portofolio Markowitz Saham Bank Raksasa Indonesia
+      <h1 class="hero-title">
+        Financial Risk Dynamics & <strong>Markowitz Portfolio Optimization</strong> of Indonesian Banking Giants
       </h1>
 
-      <p class="masthead-abstract">
-        Evaluasi komputasional empiris terhadap 4 pilar perbankan kapitalisasi terbesar di Bursa Efek Indonesia (BBCA, BBRI, BMRI, BBNI). Membedah fenomena ekor tebal non-normalitas, disparitas ketahanan krisis, dan batas kurva efisiensi alokasi modal optimal.
+      <p class="hero-description">
+        Kajian analitik empiris terhadap empat pilar perbankan kapitalisasi terbesar di Bursa Efek Indonesia. Membedah fenomena ekor tebal non-normalitas, disparitas ketahanan krisis, dan konstruksi alokasi modal optimal pada batas efisiensi kuadratik.
       </p>
     </section>
 
-    <!-- Key Metric Stream (Open Unboxed Numbers) -->
-    <section class="metrics-stream">
-      <div class="metric-unit">
-        <span class="metric-unit-label">Return Tahunan BBCA</span>
-        <span class="metric-unit-value text-emerald font-mono" id="kpi-bbca-ret">+10.14%</span>
-        <p class="metric-unit-note">Pertumbuhan kumulatif +213.3% sejak awal 2015.</p>
+    <!-- Key Metrics 4-Unit Double-Bezel Grid -->
+    <section class="metrics-bezel-grid">
+      
+      <div class="double-bezel-shell">
+        <div class="double-bezel-core stat-unit-card">
+          <span class="stat-unit-label">BBCA Annual Return</span>
+          <span class="stat-unit-value text-glow-emerald" id="kpi-bbca-ret">+10.14%</span>
+          <p class="stat-unit-note">Pertumbuhan kumulatif modal +213.3% sejak 2015 dengan volatilitas terendah.</p>
+        </div>
       </div>
 
-      <div class="metric-unit">
-        <span class="metric-unit-label">Portofolio Max Sharpe</span>
-        <span class="metric-unit-value text-blue font-mono" id="kpi-opt-sharpe">0.207</span>
-        <p class="metric-unit-note">Alokasi optimal: 72.4% BBCA & 27.6% BMRI.</p>
+      <div class="double-bezel-shell">
+        <div class="double-bezel-core stat-unit-card">
+          <span class="stat-unit-label">Optimal Sharpe Ratio</span>
+          <span class="stat-unit-value text-glow-blue" id="kpi-opt-sharpe">0.207</span>
+          <p class="stat-unit-note">Titik tangensi optimal Markowitz: 72.4% BBCA & 27.6% BMRI.</p>
+        </div>
       </div>
 
-      <div class="metric-unit">
-        <span class="metric-unit-label">Volatilitas Portofolio Rata</span>
-        <span class="metric-unit-value font-mono" id="kpi-ew-vol">25.70%</span>
-        <p class="metric-unit-note">Meredam risiko idiosinkratik emiten tunggal.</p>
+      <div class="double-bezel-shell">
+        <div class="double-bezel-core stat-unit-card">
+          <span class="stat-unit-label">Equal-Weight Volatility</span>
+          <span class="stat-unit-value font-mono" id="kpi-ew-vol">25.70%</span>
+          <p class="stat-unit-note">Diversifikasi portofolio 4 bank meredam risiko spesifik aset tunggal.</p>
+        </div>
       </div>
 
-      <div class="metric-unit">
-        <span class="metric-unit-label">Drawdown Maksimum</span>
-        <span class="metric-unit-value text-muted-red font-mono" id="kpi-mdd-val">-48.37%</span>
-        <p class="metric-unit-note">Titik terendah saat guncangan pandemi Q1 2020.</p>
+      <div class="double-bezel-shell">
+        <div class="double-bezel-core stat-unit-card">
+          <span class="stat-unit-label">Max Crisis Drawdown</span>
+          <span class="stat-unit-value text-glow-rose font-mono" id="kpi-mdd-val">-48.37%</span>
+          <p class="stat-unit-note">Kedalaman penurunan nilai saat guncangan likuiditas global Maret 2020.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Section 1: Cumulative Trajectory Interactive Chart Stage -->
+    <section class="section-wrapper">
+      <div class="section-headline-wrap">
+        <span class="section-tag">01 / TIME-SERIES TRAJECTORY</span>
+        <h2 class="section-heading">Pertumbuhan Investasi Kumulatif (Basis 100)</h2>
+        <p class="section-subtext">Normalisasi deret waktu harga penutupan harian ke basis 100 pada awal periode observasi Januari 2015.</p>
+      </div>
+
+      <div class="double-bezel-shell">
+        <div class="double-bezel-core">
+          
+          <div class="chart-header-toolbar">
+            <!-- Horizon Slicing -->
+            <div class="segmented-track" id="period-selector">
+              <button type="button" class="seg-pill-btn active" data-period="ALL">Semua (11 Th)</button>
+              <button type="button" class="seg-pill-btn" data-period="5Y">5 Tahun</button>
+              <button type="button" class="seg-pill-btn" data-period="3Y">3 Tahun</button>
+              <button type="button" class="seg-pill-btn" data-period="1Y">1 Tahun</button>
+            </div>
+
+            <!-- Asset Toggles -->
+            <div class="asset-toggles-wrap" id="asset-filters">
+              <button type="button" class="asset-toggle-chip active" data-filter="all">Semua Aset</button>
+              <button type="button" class="asset-toggle-chip" data-filter="ew">
+                <span class="chip-glow-dot dot-port"></span> Portofolio Rata
+              </button>
+              <button type="button" class="asset-toggle-chip" data-filter="BBCA">
+                <span class="chip-glow-dot dot-bbca"></span> BBCA
+              </button>
+              <button type="button" class="asset-toggle-chip" data-filter="BBRI">
+                <span class="chip-glow-dot dot-bbri"></span> BBRI
+              </button>
+              <button type="button" class="asset-toggle-chip" data-filter="BMRI">
+                <span class="chip-glow-dot dot-bmri"></span> BMRI
+              </button>
+              <button type="button" class="asset-toggle-chip" data-filter="BBNI">
+                <span class="chip-glow-dot dot-bbni"></span> BBNI
+              </button>
+            </div>
+          </div>
+
+          <div class="chart-stage-box">
+            <canvas id="mainChart"></canvas>
+          </div>
+
+        </div>
       </div>
     </section>
 
-    <!-- Section 1: Cumulative Trajectory Chart (Observable Stage) -->
-    <section class="editorial-section">
-      <div class="section-header-block">
-        <span class="section-num">01 / TRAJEKTORI PERTUMBUHAN</span>
-        <h2 class="section-title">Kinerja Nilai Investasi Kumulatif (Basis 100)</h2>
-        <p class="section-desc">Normalisasi harga saham harian ke basis 100 pada awal periode observasi (Januari 2015).</p>
+    <!-- Section 2: Markowitz Efficient Frontier & Dynamic Interactive Allocator -->
+    <section class="section-wrapper">
+      <div class="section-headline-wrap">
+        <span class="section-tag">02 / QUANTITATIVE OPTIMIZATION</span>
+        <h2 class="section-heading">Batas Efisiensi Markowitz & Dynamic Allocator</h2>
+        <p class="section-subtext">Kalkulasi varians terrealisasi berdasarkan matriks kovarians harian komprehensif.</p>
       </div>
 
-      <div class="chart-workspace">
-        <div class="chart-toolbar">
-          <!-- Time Horizon Slicing -->
-          <div class="segmented-pills" id="period-selector">
-            <button type="button" class="segmented-btn active" data-period="ALL">Semua (11 Th)</button>
-            <button type="button" class="segmented-btn" data-period="5Y">5 Tahun</button>
-            <button type="button" class="segmented-btn" data-period="3Y">3 Tahun</button>
-            <button type="button" class="segmented-btn" data-period="1Y">1 Tahun</button>
-          </div>
-
-          <!-- Asset Isolation Chips -->
-          <div class="asset-chips-wrap" id="asset-filters">
-            <button type="button" class="asset-chip active" data-filter="all">Semua Aset</button>
-            <button type="button" class="asset-chip" data-filter="ew">
-              <span class="chip-dot dot-port"></span> Portofolio Rata
-            </button>
-            <button type="button" class="asset-chip" data-filter="BBCA">
-              <span class="chip-dot dot-bbca"></span> BBCA
-            </button>
-            <button type="button" class="asset-chip" data-filter="BBRI">
-              <span class="chip-dot dot-bbri"></span> BBRI
-            </button>
-            <button type="button" class="asset-chip" data-filter="BMRI">
-              <span class="chip-dot dot-bmri"></span> BMRI
-            </button>
-            <button type="button" class="asset-chip" data-filter="BBNI">
-              <span class="chip-dot dot-bbni"></span> BBNI
-            </button>
-          </div>
-        </div>
-
-        <div class="chart-canvas-box">
-          <canvas id="mainChart"></canvas>
-        </div>
-      </div>
-    </section>
-
-    <!-- Section 2: Markowitz Efficient Frontier & Interactive Portfolio Constructor -->
-    <section class="editorial-section">
-      <div class="section-header-block">
-        <span class="section-num">02 / TEORI PORTOFOLIO MODERN</span>
-        <h2 class="section-title">Batas Efisiensi Markowitz & Simulator Alokasi Bobot</h2>
-        <p class="section-desc">Kalkulasi varians dan imbal hasil portofolio berbasis matriks kovarians terrealisasi \(\mathbf{w}^T \mathbf{\Sigma} \mathbf{w}\).</p>
-      </div>
-
-      <div class="workbench-grid">
+      <div class="workbench-two-col">
         
         <!-- Left: Efficient Frontier Canvas -->
-        <div class="workbench-card">
-          <div class="card-title-group">
+        <div class="double-bezel-shell">
+          <div class="double-bezel-core" style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
             <div>
-              <div class="card-title">Kurva Batas Efisiensi (Efficient Frontier)</div>
-              <div class="card-subtitle">Optimasi Mean-Variance Kuadratik</div>
+              <div style="font-size: 15px; font-weight: 600; color: #fff;">Kurva Efficient Frontier</div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Optimasi Kuadratik Mean-Variance (MVO)</div>
             </div>
-          </div>
 
-          <div class="frontier-canvas-box">
-            <canvas id="frontierCanvas"></canvas>
-          </div>
-
-          <div class="frontier-insights">
-            <div class="insight-pill">
-              <span class="insight-pill-title">Max Sharpe Ratio</span>
-              <span class="insight-pill-val">Return 10.14% • Sharpe 0.207</span>
-              <span class="insight-pill-desc">72.4% BBCA + 27.6% BMRI</span>
+            <div class="frontier-canvas-wrap">
+              <canvas id="frontierCanvas"></canvas>
             </div>
-            <div class="insight-pill">
-              <span class="insight-pill-title">Min Volatilitas</span>
-              <span class="insight-pill-val">Vol 24.12% • Sharpe 0.208</span>
-              <span class="insight-pill-desc">88.5% BBCA + 11.5% BMRI</span>
+
+            <div class="strategy-callout-deck">
+              <div class="strategy-pill-item">
+                <span class="strategy-pill-name">Max Sharpe Ratio</span>
+                <span class="strategy-pill-metric">Return 10.14% • Sharpe 0.207</span>
+                <span class="strategy-pill-desc">72.4% BBCA + 27.6% BMRI</span>
+              </div>
+              <div class="strategy-pill-item">
+                <span class="strategy-pill-name">Min Volatilitas</span>
+                <span class="strategy-pill-metric" style="color: #60a5fa;">Vol 24.12% • Sharpe 0.208</span>
+                <span class="strategy-pill-desc">88.5% BBCA + 11.5% BMRI</span>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Right: Interactive Dynamic Portfolio Constructor -->
-        <div class="workbench-card">
-          <div class="card-title-group">
-            <div>
-              <div class="card-title">Simulator Alokasi Modal</div>
-              <div class="card-subtitle">Sesuaikan bobot untuk mengevaluasi parameter risiko</div>
-            </div>
-            <button type="button" class="header-btn" id="btn-reset-weights" style="padding: 4px 10px; font-size: 11px;">
-              Reset (25% Rata)
-            </button>
-          </div>
-
-          <!-- Stress Test Selector -->
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px;">
-            <span style="color: var(--text-secondary);">Skenario Stress Test:</span>
-            <select id="stress-scenario-select" class="font-mono" style="padding: 5px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-light); background: var(--bg-subtle); color: var(--text-main); font-size: 11.5px;">
-              <option value="baseline">Normal Baseline</option>
-              <option value="rate_hike">Kenaikan Suku Bunga (+150 bps)</option>
-              <option value="liquidity_shock">Penarikan Modal Asing (-20%)</option>
-              <option value="npl_spike">Lonjakan Risiko NPL (+3.5%)</option>
-            </select>
-          </div>
-
-          <div class="sliders-stack">
-            <div class="slider-row">
-              <div class="slider-labels">
-                <span style="color: var(--color-bbca);">BBCA (Bank Central Asia)</span>
-                <span class="slider-weight-val" id="txt-w-bbca">25%</span>
+        <div class="double-bezel-shell">
+          <div class="double-bezel-core" style="display: flex; flex-direction: column; justify-content: space-between; gap: 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style="font-size: 15px; font-weight: 600; color: #fff;">Simulator Alokasi Portofolio</div>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Sesuaikan bobot untuk evaluasi seketika</div>
               </div>
-              <input type="range" class="custom-range-slider" id="range-bbca" min="0" max="100" value="25">
+              <button type="button" class="nested-pill-btn" id="btn-reset-weights" style="padding: 4px 10px; font-size: 11px;">
+                <span>Reset 25%</span>
+              </button>
             </div>
 
-            <div class="slider-row">
-              <div class="slider-labels">
-                <span style="color: var(--color-bbri);">BBRI (Bank Rakyat Indonesia)</span>
-                <span class="slider-weight-val" id="txt-w-bbri">25%</span>
+            <!-- Stress Test Scenario Selector -->
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px;">
+              <span style="color: var(--text-secondary);">Stress Test Makro:</span>
+              <select id="stress-scenario-select" class="font-mono" style="padding: 6px 12px; border-radius: 10px; border: 1px solid var(--border-inner); background: var(--bg-inset); color: #fff; font-size: 11.5px; outline: none;">
+                <option value="baseline">Normal Baseline</option>
+                <option value="rate_hike">Kenaikan Suku Bunga (+150 bps)</option>
+                <option value="liquidity_shock">Penarikan Modal Asing (-20%)</option>
+                <option value="npl_spike">Lonjakan Risiko NPL (+3.5%)</option>
+              </select>
+            </div>
+
+            <div class="slider-group-box">
+              <div class="slider-row-item">
+                <div class="slider-info-bar">
+                  <span class="slider-ticker-label" style="color: var(--accent-bbca);">BBCA (Bank Central Asia)</span>
+                  <span class="slider-weight-number" id="txt-w-bbca">25%</span>
+                </div>
+                <input type="range" class="hardware-range-slider" id="range-bbca" min="0" max="100" value="25">
               </div>
-              <input type="range" class="custom-range-slider" id="range-bbri" min="0" max="100" value="25">
-            </div>
 
-            <div class="slider-row">
-              <div class="slider-labels">
-                <span style="color: var(--color-bmri);">BMRI (Bank Mandiri)</span>
-                <span class="slider-weight-val" id="txt-w-bmri">25%</span>
+              <div class="slider-row-item">
+                <div class="slider-info-bar">
+                  <span class="slider-ticker-label" style="color: var(--accent-bbri);">BBRI (Bank Rakyat Indonesia)</span>
+                  <span class="slider-weight-number" id="txt-w-bbri">25%</span>
+                </div>
+                <input type="range" class="hardware-range-slider" id="range-bbri" min="0" max="100" value="25">
               </div>
-              <input type="range" class="custom-range-slider" id="range-bmri" min="0" max="100" value="25">
-            </div>
 
-            <div class="slider-row">
-              <div class="slider-labels">
-                <span style="color: var(--color-bbni);">BBNI (Bank Negara Indonesia)</span>
-                <span class="slider-weight-val" id="txt-w-bbni">25%</span>
+              <div class="slider-row-item">
+                <div class="slider-info-bar">
+                  <span class="slider-ticker-label" style="color: var(--accent-bmri);">BMRI (Bank Mandiri)</span>
+                  <span class="slider-weight-number" id="txt-w-bmri">25%</span>
+                </div>
+                <input type="range" class="hardware-range-slider" id="range-bmri" min="0" max="100" value="25">
               </div>
-              <input type="range" class="custom-range-slider" id="range-bbni" min="0" max="100" value="25">
-            </div>
-          </div>
 
-          <div class="result-readout-grid font-mono">
-            <div class="readout-item">
-              <span class="readout-item-label">Total Bobot</span>
-              <span class="readout-item-value" id="sim-total-alloc">100%</span>
+              <div class="slider-row-item">
+                <div class="slider-info-bar">
+                  <span class="slider-ticker-label" style="color: var(--accent-bbni);">BBNI (Bank Negara Indonesia)</span>
+                  <span class="slider-weight-number" id="txt-w-bbni">25%</span>
+                </div>
+                <input type="range" class="hardware-range-slider" id="range-bbni" min="0" max="100" value="25">
+              </div>
             </div>
-            <div class="readout-item">
-              <span class="readout-item-label">Return Ekspektasi</span>
-              <span class="readout-item-value text-emerald" id="sim-res-return">8.19%</span>
+
+            <div class="sim-readout-board font-mono">
+              <div class="readout-cell">
+                <span class="readout-cell-label">Total Bobot</span>
+                <span class="readout-cell-val" id="sim-total-alloc">100%</span>
+              </div>
+              <div class="readout-cell">
+                <span class="readout-cell-label">Return Exp</span>
+                <span class="readout-cell-val" style="color: #34d399;" id="sim-res-return">8.19%</span>
+              </div>
+              <div class="readout-cell">
+                <span class="readout-cell-label">Volatilitas</span>
+                <span class="readout-cell-val" id="sim-res-vol">25.70%</span>
+              </div>
+              <div class="readout-cell">
+                <span class="readout-cell-label">Sharpe</span>
+                <span class="readout-cell-val" style="color: #60a5fa;" id="sim-res-sharpe">0.124</span>
+              </div>
             </div>
-            <div class="readout-item">
-              <span class="readout-item-label">Volatilitas</span>
-              <span class="readout-item-value" id="sim-res-vol">25.70%</span>
-            </div>
-            <div class="readout-item">
-              <span class="readout-item-label">Sharpe Ratio</span>
-              <span class="readout-item-value text-blue" id="sim-res-sharpe">0.124</span>
-            </div>
+
           </div>
         </div>
 
@@ -245,116 +259,120 @@
     </section>
 
     <!-- Section 3: Empirical Risk Diagnostics & Correlation Matrix -->
-    <section class="editorial-section">
-      <div class="section-header-block">
-        <span class="section-num">03 / AUDIT STATISTIK & KORELASI</span>
-        <h2 class="section-title">Diagnostik Risiko Ekor & Matriks Fundamental</h2>
-        <p class="section-desc">Uji stasioneritas Augmented Dickey-Fuller (ADF) dan estimasi Value at Risk (VaR 95%).</p>
+    <section class="section-wrapper">
+      <div class="section-headline-wrap">
+        <span class="section-tag">03 / EMPIRICAL AUDITS</span>
+        <h2 class="section-heading">Diagnostik Risiko Ekor & Matriks Fundamental</h2>
+        <p class="section-subtext">Uji stasioneritas Augmented Dickey-Fuller (ADF) dan estimasi Value at Risk (VaR 95%).</p>
       </div>
 
-      <div class="tables-grid">
+      <div class="data-tables-two-col">
         
         <!-- Table 1: Tail Risk & Stationarity -->
-        <div class="table-card">
-          <div class="card-title">Estimasi Risiko Pasar (VaR & Expected Shortfall 95%)</div>
-          <div class="table-overflow">
-            <table class="booktabs-table font-mono">
-              <thead>
-                <tr>
-                  <th>Emiten</th>
-                  <th>VaR 95%</th>
-                  <th>ES 95%</th>
-                  <th>ADF Test</th>
-                  <th>Kurtosis</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong style="color: var(--color-bbca);">BBCA</strong></td>
-                  <td class="text-emerald">2.28%</td>
-                  <td class="text-emerald">3.46%</td>
-                  <td>-9.904</td>
-                  <td>7.514 (Fat-Tail)</td>
-                </tr>
-                <tr>
-                  <td><strong style="color: var(--color-bbri);">BBRI</strong></td>
-                  <td>3.10%</td>
-                  <td>4.58%</td>
-                  <td>-28.192</td>
-                  <td>4.869</td>
-                </tr>
-                <tr>
-                  <td><strong style="color: var(--color-bmri);">BMRI</strong></td>
-                  <td>3.18%</td>
-                  <td>4.63%</td>
-                  <td>-19.593</td>
-                  <td>4.128</td>
-                </tr>
-                <tr>
-                  <td><strong style="color: var(--color-bbni);">BBNI</strong></td>
-                  <td class="text-muted-red">3.25%</td>
-                  <td class="text-muted-red">4.72%</td>
-                  <td>-50.163</td>
-                  <td>3.507</td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="double-bezel-shell">
+          <div class="double-bezel-core">
+            <div style="font-size: 15px; font-weight: 600; color: #fff;">Estimasi Risiko Pasar (VaR & Expected Shortfall 95%)</div>
+            <div class="table-scroller">
+              <table class="hardware-booktabs-table font-mono">
+                <thead>
+                  <tr>
+                    <th>Emiten</th>
+                    <th>VaR 95%</th>
+                    <th>ES 95%</th>
+                    <th>ADF Test</th>
+                    <th>Kurtosis</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong style="color: var(--accent-bbca);">BBCA</strong></td>
+                    <td style="color: #34d399;">2.28%</td>
+                    <td style="color: #34d399;">3.46%</td>
+                    <td>-9.904</td>
+                    <td>7.514 (Fat-Tail)</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: var(--accent-bbri);">BBRI</strong></td>
+                    <td>3.10%</td>
+                    <td>4.58%</td>
+                    <td>-28.192</td>
+                    <td>4.869</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: var(--accent-bmri);">BMRI</strong></td>
+                    <td>3.18%</td>
+                    <td>4.63%</td>
+                    <td>-19.593</td>
+                    <td>4.128</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: var(--accent-bbni);">BBNI</strong></td>
+                    <td style="color: #fb7185;">3.25%</td>
+                    <td style="color: #fb7185;">4.72%</td>
+                    <td>-50.163</td>
+                    <td>3.507</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="table-footer-annotation">Uji Jarque-Bera menolak normalitas (p < 0.001), membuktikan deret return harian memiliki ekor tebal leptokurtik.</p>
           </div>
-          <p class="table-caption-note">Uji Jarque-Bera menolak normalitas ($p < 0.001$), membuktikan deret return harian memiliki ekor tebal leptokurtik.</p>
         </div>
 
         <!-- Table 2: Fundamental Valuation & Correlations -->
-        <div class="table-card">
-          <div class="card-title">Fundamental Kunci & Matriks Korelasi Saham</div>
-          <div class="table-overflow">
-            <table class="booktabs-table font-mono">
-              <thead>
-                <tr>
-                  <th>Bank</th>
-                  <th>ROE</th>
-                  <th>NPL</th>
-                  <th>NIM</th>
-                  <th>PBV</th>
-                  <th>Korelasi BBCA</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>BBCA</strong></td>
-                  <td class="text-emerald">20.5%</td>
-                  <td>1.9%</td>
-                  <td>5.5%</td>
-                  <td>4.8x</td>
-                  <td>1.000</td>
-                </tr>
-                <tr>
-                  <td><strong>BBRI</strong></td>
-                  <td>18.2%</td>
-                  <td>3.1%</td>
-                  <td class="text-emerald">7.8%</td>
-                  <td>2.3x</td>
-                  <td>0.582</td>
-                </tr>
-                <tr>
-                  <td><strong>BMRI</strong></td>
-                  <td class="text-emerald">21.1%</td>
-                  <td class="text-emerald">1.2%</td>
-                  <td>5.4%</td>
-                  <td>2.1x</td>
-                  <td>0.621</td>
-                </tr>
-                <tr>
-                  <td><strong>BBNI</strong></td>
-                  <td>14.5%</td>
-                  <td>2.3%</td>
-                  <td>4.4%</td>
-                  <td>1.2x</td>
-                  <td>0.554</td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="double-bezel-shell">
+          <div class="double-bezel-core">
+            <div style="font-size: 15px; font-weight: 600; color: #fff;">Fundamental Kunci & Matriks Korelasi Saham</div>
+            <div class="table-scroller">
+              <table class="hardware-booktabs-table font-mono">
+                <thead>
+                  <tr>
+                    <th>Bank</th>
+                    <th>ROE</th>
+                    <th>NPL</th>
+                    <th>NIM</th>
+                    <th>PBV</th>
+                    <th>Korelasi BBCA</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong style="color: var(--accent-bbca);">BBCA</strong></td>
+                    <td style="color: #34d399;">20.5%</td>
+                    <td>1.9%</td>
+                    <td>5.5%</td>
+                    <td>4.8x</td>
+                    <td>1.000</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: var(--accent-bbri);">BBRI</strong></td>
+                    <td>18.2%</td>
+                    <td>3.1%</td>
+                    <td style="color: #34d399;">7.8%</td>
+                    <td>2.3x</td>
+                    <td>0.582</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: var(--accent-bmri);">BMRI</strong></td>
+                    <td style="color: #34d399;">21.1%</td>
+                    <td style="color: #34d399;">1.2%</td>
+                    <td>5.4%</td>
+                    <td>2.1x</td>
+                    <td>0.621</td>
+                  </tr>
+                  <tr>
+                    <td><strong style="color: var(--accent-bbni);">BBNI</strong></td>
+                    <td>14.5%</td>
+                    <td>2.3%</td>
+                    <td>4.4%</td>
+                    <td style="color: var(--accent-bbri);">1.2x</td>
+                    <td>0.554</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="table-footer-annotation">Korelasi tidak sempurna antara BBCA dan BBNI (0.554) membuka peluang efisiensi diversifikasi portofolio untuk meredam volatilitas.</p>
           </div>
-          <p class="table-caption-note">Korelasi tidak sempurna antara BBCA dan BBNI (0.554) membuka peluang efisiensi diversifikasi portofolio untuk meredam volatilitas.</p>
         </div>
 
       </div>
@@ -362,11 +380,11 @@
 
   </main>
 
-  <!-- Editorial Minimalist Footer -->
-  <footer class="site-footer">
-    <div class="footer-inner">
+  <!-- Terminal Footer -->
+  <footer class="site-footer-terminal">
+    <div class="footer-content-wrap">
       <div>
-        <span>Studi Analisis Portofolio & Risiko Kuantitatif Saham Bank Indonesia (2015-2026)</span>
+        <span>Indonesian Big Four Banks Quantitative Risk & Portfolio Engineering</span>
       </div>
       <div class="font-mono">
         <span>Izam Rosiawan • Universitas Telkom Surabaya</span>
