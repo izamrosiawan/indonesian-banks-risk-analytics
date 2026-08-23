@@ -26,25 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let mainChart = null;
   let frontierChart = null;
 
-  initScrollReveal();
   initThemeToggle();
   initMainChart();
   initFrontierChart();
   initPortfolioSimulator();
-  initSQLExplorer();
-
-  function initScrollReveal() {
-    const reveals = document.querySelectorAll('.reveal-on-scroll');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
-        }
-      });
-    }, { threshold: 0.1 });
-
-    reveals.forEach(el => observer.observe(el));
-  }
 
   function initThemeToggle() {
     const themeBtn = document.getElementById('btn-theme-toggle');
@@ -60,15 +45,18 @@ document.addEventListener('DOMContentLoaded', () => {
   function getThemeColors() {
     const isDark = currentTheme === 'dark';
     return {
-      textColor: isDark ? '#94a3b8' : '#71717a',
-      titleColor: isDark ? '#f8fafc' : '#18181b',
-      gridColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
-      tooltipBg: isDark ? '#101726' : '#ffffff',
-      tooltipBorder: isDark ? '#1e293b' : '#e4e4e7',
-      primaryBlue: isDark ? '#38bdf8' : '#2563eb',
-      emerald: isDark ? '#10b981' : '#047857',
-      amber: isDark ? '#fbbf24' : '#b45309',
-      red: isDark ? '#f87171' : '#b91c1c'
+      textColor: isDark ? '#8b949e' : '#6b7280',
+      titleColor: isDark ? '#f0f6fc' : '#111827',
+      gridColor: isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)',
+      tooltipBg: isDark ? '#161b22' : '#ffffff',
+      tooltipBorder: isDark ? '#30363d' : '#e5e7eb',
+      colorBBCA: isDark ? '#60a5fa' : '#1e40af',
+      colorBBRI: isDark ? '#fbbf24' : '#b45309',
+      colorBMRI: isDark ? '#2dd4bf' : '#0f766e',
+      colorBBNI: isDark ? '#fb7185' : '#be123c',
+      colorEW: isDark ? '#94a3b8' : '#475569',
+      emerald: isDark ? '#34d399' : '#047857',
+      blue: isDark ? '#60a5fa' : '#1d4ed8'
     };
   }
 
@@ -83,35 +71,49 @@ document.addEventListener('DOMContentLoaded', () => {
       data: {
         labels: rawData.dates,
         datasets: [
-          { label: 'BBCA', data: rawData.normalized.BBCA, borderColor: tc.emerald, borderWidth: 2.5, pointRadius: 3, tension: 0.15 },
-          { label: 'BBRI', data: rawData.normalized.BBRI, borderColor: tc.amber, borderWidth: 2.5, pointRadius: 3, tension: 0.15 },
-          { label: 'BMRI', data: rawData.normalized.BMRI, borderColor: tc.primaryBlue, borderWidth: 2.5, pointRadius: 3, tension: 0.15 },
-          { label: 'BBNI', data: rawData.normalized.BBNI, borderColor: tc.red, borderWidth: 2.5, pointRadius: 3, tension: 0.15 },
-          { label: 'Portofolio Rata', data: rawData.normalized.EquallyWeighted, borderColor: tc.textColor, borderWidth: 2, borderDash: [5, 5], pointRadius: 2, tension: 0.15 }
+          { label: 'BBCA', data: rawData.normalized.BBCA, borderColor: tc.colorBBCA, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.2 },
+          { label: 'BBRI', data: rawData.normalized.BBRI, borderColor: tc.colorBBRI, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.2 },
+          { label: 'BMRI', data: rawData.normalized.BMRI, borderColor: tc.colorBMRI, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.2 },
+          { label: 'BBNI', data: rawData.normalized.BBNI, borderColor: tc.colorBBNI, borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.2 },
+          { label: 'Portofolio Rata', data: rawData.normalized.EquallyWeighted, borderColor: tc.colorEW, borderWidth: 1.8, borderDash: [4, 4], pointRadius: 0, pointHoverRadius: 4, tension: 0.2 }
         ]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 900, easing: 'easeOutQuart' },
+        animation: { duration: 600, easing: 'easeOutQuart' },
+        interaction: { mode: 'index', intersect: false },
         plugins: {
-          legend: {
-            position: 'top',
-            labels: { color: tc.titleColor, font: { family: 'Plus Jakarta Sans', size: 11, weight: '500' }, boxWidth: 10, boxHeight: 10 }
-          },
+          legend: { display: false },
           tooltip: {
             backgroundColor: tc.tooltipBg,
             titleColor: tc.titleColor,
             bodyColor: tc.textColor,
             borderColor: tc.tooltipBorder,
             borderWidth: 1,
-            titleFont: { family: 'JetBrains Mono', size: 12 },
-            bodyFont: { family: 'JetBrains Mono', size: 11 }
+            padding: 12,
+            boxPadding: 4,
+            usePointStyle: true,
+            titleFont: { family: 'JetBrains Mono', size: 12, weight: '600' },
+            bodyFont: { family: 'JetBrains Mono', size: 11 },
+            callbacks: {
+              label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}`
+            }
           }
         },
         scales: {
-          x: { grid: { display: false }, ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } } },
-          y: { grid: { color: tc.gridColor }, ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 }, callback: (v) => `Rp ${v}` } }
+          x: {
+            grid: { display: false },
+            ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } }
+          },
+          y: {
+            grid: { color: tc.gridColor },
+            ticks: {
+              color: tc.textColor,
+              font: { family: 'JetBrains Mono', size: 10 },
+              callback: (v) => `${v}`
+            }
+          }
         }
       }
     });
@@ -120,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function initChartFilters() {
-    const periodBtns = document.querySelectorAll('#period-selector .seg-item');
+    const periodBtns = document.querySelectorAll('#period-selector button');
     periodBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         periodBtns.forEach(b => b.classList.remove('active'));
@@ -130,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    const filterBtns = document.querySelectorAll('#asset-filters .pill-btn');
+    const filterBtns = document.querySelectorAll('#asset-filters button');
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
@@ -184,28 +186,29 @@ document.addEventListener('DOMContentLoaded', () => {
       data: {
         datasets: [
           {
-            label: 'Efficient Frontier Curve',
+            label: 'Efficient Frontier',
             data: frontierCurve,
             showLine: true,
-            borderColor: tc.primaryBlue,
-            borderWidth: 2.5,
-            pointRadius: 4,
-            pointBackgroundColor: tc.primaryBlue,
-            fill: false
+            borderColor: tc.blue,
+            borderWidth: 2,
+            pointRadius: 3,
+            pointBackgroundColor: tc.blue,
+            fill: false,
+            tension: 0.3
           },
           {
-            label: 'Max Sharpe (Return 10.14%, Vol 24.81%)',
+            label: 'Max Sharpe (72.4% BBCA + 27.6% BMRI)',
             data: [{ x: 24.81, y: 10.14 }],
-            pointRadius: 8,
+            pointRadius: 7,
             pointBackgroundColor: tc.emerald,
             pointBorderColor: '#ffffff',
             pointBorderWidth: 2
           },
           {
-            label: 'Min Volatility (Return 10.02%, Vol 24.12%)',
+            label: 'Min Volatilitas (88.5% BBCA + 11.5% BMRI)',
             data: [{ x: 24.12, y: 10.02 }],
-            pointRadius: 8,
-            pointBackgroundColor: tc.primaryBlue,
+            pointRadius: 7,
+            pointBackgroundColor: tc.blue,
             pointBorderColor: '#ffffff',
             pointBorderWidth: 2
           }
@@ -214,11 +217,16 @@ document.addEventListener('DOMContentLoaded', () => {
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        animation: { duration: 900, easing: 'easeOutQuart' },
+        animation: { duration: 600, easing: 'easeOutQuart' },
         plugins: {
           legend: {
             position: 'top',
-            labels: { color: tc.titleColor, font: { family: 'Plus Jakarta Sans', size: 10 } }
+            labels: {
+              color: tc.titleColor,
+              font: { family: 'Plus Jakarta Sans', size: 10.5, weight: '500' },
+              boxWidth: 8,
+              boxHeight: 8
+            }
           },
           tooltip: {
             backgroundColor: tc.tooltipBg,
@@ -226,14 +234,25 @@ document.addEventListener('DOMContentLoaded', () => {
             bodyColor: tc.textColor,
             borderColor: tc.tooltipBorder,
             borderWidth: 1,
+            padding: 10,
+            titleFont: { family: 'JetBrains Mono', size: 11, weight: '600' },
+            bodyFont: { family: 'JetBrains Mono', size: 10.5 },
             callbacks: {
-              label: (ctx) => ` Vol: ${ctx.raw.x}% | Return: ${ctx.raw.y}%`
+              label: (ctx) => ` Volatilitas: ${ctx.raw.x}% | Return: ${ctx.raw.y}%`
             }
           }
         },
         scales: {
-          x: { title: { display: true, text: 'Volatilitas Tahunan (%)', color: tc.textColor }, grid: { color: tc.gridColor }, ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } } },
-          y: { title: { display: true, text: 'Imbal Hasil Ekspektasi (%)', color: tc.textColor }, grid: { color: tc.gridColor }, ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } } }
+          x: {
+            title: { display: true, text: 'Volatilitas Tahunan (%)', color: tc.textColor, font: { size: 10.5 } },
+            grid: { color: tc.gridColor },
+            ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } }
+          },
+          y: {
+            title: { display: true, text: 'Imbal Hasil Ekspektasi (%)', color: tc.textColor, font: { size: 10.5 } },
+            grid: { color: tc.gridColor },
+            ticks: { color: tc.textColor, font: { family: 'JetBrains Mono', size: 10 } }
+          }
         }
       }
     });
@@ -269,8 +288,10 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('txt-w-bbni').textContent = `${rBBNI.value}%`;
       
       const allocEl = document.getElementById('sim-total-alloc');
-      allocEl.textContent = `${(totalW * 100).toFixed(0)}%`;
-      allocEl.className = Math.abs(totalW - 1.0) < 0.01 ? 'readout-val text-emerald' : 'readout-val text-red';
+      if (allocEl) {
+        allocEl.textContent = `${(totalW * 100).toFixed(0)}%`;
+        allocEl.style.color = Math.abs(totalW - 1.0) < 0.01 ? 'var(--color-emerald)' : 'var(--color-red)';
+      }
 
       let multReturn = 1.0;
       let multVol = 1.0;
@@ -296,9 +317,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const rf = 0.05;
       const sharpe = annualVol > 0 ? (pReturn - rf) / annualVol : 0;
 
-      document.getElementById('sim-res-return').textContent = `${(pReturn * 100).toFixed(2)}%`;
-      document.getElementById('sim-res-vol').textContent = `${(annualVol * 100).toFixed(2)}%`;
-      document.getElementById('sim-res-sharpe').textContent = sharpe.toFixed(3);
+      const retEl = document.getElementById('sim-res-return');
+      const volEl = document.getElementById('sim-res-vol');
+      const sharpeEl = document.getElementById('sim-res-sharpe');
+
+      if (retEl) retEl.textContent = `${(pReturn * 100).toFixed(2)}%`;
+      if (volEl) volEl.textContent = `${(annualVol * 100).toFixed(2)}%`;
+      if (sharpeEl) sharpeEl.textContent = sharpe.toFixed(3);
     }
 
     [rBBCA, rBBRI, rBMRI, rBBNI].forEach(r => r.addEventListener('input', calculatePortfolio));
@@ -314,65 +339,6 @@ document.addEventListener('DOMContentLoaded', () => {
         calculatePortfolio();
       });
     }
-  }
-
-  function initSQLExplorer() {
-    const btnVar = document.getElementById('btn-q-var');
-    const btnFrontier = document.getElementById('btn-q-frontier');
-    const btnNpl = document.getElementById('btn-q-npl');
-    const codeDisplay = document.getElementById('sql-code-display');
-
-    const snippets = {
-      var: `-- 1. Estimasi Value at Risk (VaR 95%) & Expected Shortfall (ES 95%)
-SELECT 
-    symbol,
-    COUNT(log_return) AS sample_size,
-    ROUND(AVG(log_return), 6) AS mean_daily_return,
-    ROUND(STDDEV(log_return), 5) AS daily_volatility,
-    ROUND(PERCENTILE_CONT(0.05) WITHIN GROUP (ORDER BY log_return), 5) AS var_95_historical,
-    ROUND(AVG(CASE WHEN log_return <= PERCENTILE_CONT(0.05) WITHIN GROUP (ORDER BY log_return) THEN log_return END), 5) AS expected_shortfall_95
-FROM bank_daily_returns
-GROUP BY symbol
-ORDER BY var_95_historical ASC;`,
-
-      frontier: `-- 2. Matriks Kovarians Harian untuk Optimasi Markowitz
-SELECT 
-    r1.symbol AS asset_1,
-    r2.symbol AS asset_2,
-    ROUND(AVG((r1.log_return - m1.avg_r) * (r2.log_return - m2.avg_r)), 6) AS covariance
-FROM bank_daily_returns r1
-JOIN bank_daily_returns r2 ON r1.trade_date = r2.trade_date
-JOIN (SELECT symbol, AVG(log_return) AS avg_r FROM bank_daily_returns GROUP BY symbol) m1 ON r1.symbol = m1.symbol
-JOIN (SELECT symbol, AVG(log_return) AS avg_r FROM bank_daily_returns GROUP BY symbol) m2 ON r2.symbol = m2.symbol
-GROUP BY r1.symbol, r2.symbol
-ORDER BY r1.symbol, r2.symbol;`,
-
-      npl: `-- 3. Diagnosa Korelasi Rasio NPL vs Imbal Hasil Ekuitas (ROE)
-SELECT 
-    symbol,
-    fiscal_year,
-    net_interest_margin_pct AS nim,
-    non_performing_loan_pct AS npl,
-    return_on_equity_pct AS roe,
-    price_to_book_ratio AS pbv
-FROM bank_fundamental_metrics
-WHERE fiscal_year = 2024
-ORDER BY roe DESC;`
-    };
-
-    function setSnippet(key, activeBtn) {
-      if (codeDisplay) {
-        codeDisplay.innerHTML = `<code>${snippets[key]}</code>`;
-      }
-      [btnVar, btnFrontier, btnNpl].forEach(b => {
-        if (b) b.classList.remove('active');
-      });
-      if (activeBtn) activeBtn.classList.add('active');
-    }
-
-    if (btnVar) btnVar.addEventListener('click', () => setSnippet('var', btnVar));
-    if (btnFrontier) btnFrontier.addEventListener('click', () => setSnippet('frontier', btnFrontier));
-    if (btnNpl) btnNpl.addEventListener('click', () => setSnippet('npl', btnNpl));
   }
 
 });
