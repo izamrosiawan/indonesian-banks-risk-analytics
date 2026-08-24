@@ -84,6 +84,23 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sharpeEl) sharpeEl.textContent = `Sharpe: ${estSharpe.toFixed(2)}`;
     if (yieldEl) yieldEl.textContent = `+${estYield.toFixed(1)}% p.a.`;
     if (varEl) varEl.textContent = `-Rp ${(Math.abs(estVaR)).toFixed(2)} Juta`;
+
+    const bufEl = document.getElementById('telemetry-buffer');
+    const ckpnEl = document.getElementById('telemetry-ckpn');
+    const ojkEl = document.getElementById('telemetry-ojk-status');
+
+    if (bufEl) {
+      const buf = (car - 8.0).toFixed(1);
+      bufEl.textContent = `${buf >= 0 ? '+' : ''}${buf}% Capital`;
+    }
+    if (ckpnEl) {
+      const ckpn = Math.max(120, Math.min(380, Math.round(280 - (npl * 35) + (car * 2.5))));
+      ckpnEl.textContent = `${ckpn}% NPL`;
+    }
+    if (ojkEl) {
+      ojkEl.textContent = score >= 75 ? 'PASSED (Tier-1)' : (score >= 50 ? 'CAUTION (Tier-2)' : 'ALERT (Tier-3)');
+      ojkEl.style.color = score >= 75 ? 'var(--color-primary)' : (score >= 50 ? '#d97706' : '#dc2626');
+    }
   }
 
   [simCar, simNpl, simLdr, simNim].forEach(input => {

@@ -563,10 +563,23 @@ body {
 .meta-label { color: var(--text-muted); }
 .meta-val { color: var(--color-primary); font-weight: 700; }
 
+.asymmetric-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.75rem;
+  align-items: stretch;
+}
+
+.bento-col-8 { grid-column: span 8; }
+.bento-col-4 { grid-column: span 4; }
+.bento-col-6 { grid-column: span 6; }
+.bento-col-12 { grid-column: span 12; }
+
 .balanced-bezel-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1.75rem;
+  align-items: stretch;
 }
 
 .studio-split-console {
