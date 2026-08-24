@@ -275,6 +275,23 @@
           <p class="tier-narrative" id="sim-explanation-text">
             Permodalan prima (CAR 23.5%) dengan bantalan tebal. Mampu menyerap lonjakan NPL hingga skenario stress-test terberat.
           </p>
+
+          <div class="bank-var-pod" style="margin-top: 1.25rem; padding: 1rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-shell); border-radius: var(--radius-inner); width: 100%; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-primary); font-weight: 700; text-transform: uppercase;">Parametric VaR & Sharpe Telemetry</span>
+              <span id="telemetry-sharpe" style="font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; color: var(--text-primary); background: var(--color-primary-glow); padding: 0.15rem 0.4rem; border-radius: 4px;">Sharpe: 1.18</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.78rem;">
+              <div>
+                <div style="color: var(--text-muted); font-size: 0.7rem;">95% Daily VaR (Rp 100M)</div>
+                <div id="telemetry-var" style="font-family: var(--font-mono); font-weight: 700; color: #dc2626;">-Rp 2.14 Juta</div>
+              </div>
+              <div>
+                <div style="color: var(--text-muted); font-size: 0.7rem;">Expected Annual Yield</div>
+                <div id="telemetry-yield" style="font-family: var(--font-mono); font-weight: 700; color: var(--color-primary);">+15.8% p.a.</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

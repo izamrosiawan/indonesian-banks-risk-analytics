@@ -72,6 +72,18 @@ document.addEventListener('DOMContentLoaded', () => {
         simExplanationText.textContent = `Tekanan NPL (${npl.toFixed(1)}%) menggerus modal bank. Diperlukan injeksi modal tambahan atau pengetatan penyaluran kredit.`;
       }
     }
+
+    const sharpeEl = document.getElementById('telemetry-sharpe');
+    const varEl = document.getElementById('telemetry-var');
+    const yieldEl = document.getElementById('telemetry-yield');
+
+    const estSharpe = (score / 100) * 1.35;
+    const estYield = 8.5 + (nim * 1.4) + (car * 0.15) - (npl * 1.2);
+    const estVaR = - (1.645 * (2.8 - (score / 100) * 1.2));
+
+    if (sharpeEl) sharpeEl.textContent = `Sharpe: ${estSharpe.toFixed(2)}`;
+    if (yieldEl) yieldEl.textContent = `+${estYield.toFixed(1)}% p.a.`;
+    if (varEl) varEl.textContent = `-Rp ${(Math.abs(estVaR)).toFixed(2)} Juta`;
   }
 
   [simCar, simNpl, simLdr, simNim].forEach(input => {
