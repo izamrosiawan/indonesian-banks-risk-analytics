@@ -3,361 +3,400 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analisis Risiko & Portofolio Saham Bank Indonesia (BBCA, BBRI, BMRI, BBNI)</title>
-  <meta name="description" content="Kajian komputasional empiris risiko pasar, kurva Markowitz Efficient Frontier, dan simulasi alokasi portofolio saham perbankan Indonesia (2015-2026).">
+  <title>Indonesian Banks Risk Analytics — Big 4 Solvency & Stress-Test Studio</title>
+  <meta name="description" content="Longitudinal empirical risk and solvency benchmark across Indonesia's Big 4 Banks (BBCA, BBRI, BMRI, BBNI) with Basel III stress-test modeling.">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Top Navigation Bar -->
-  <header class="top-navbar">
-    <div class="nav-container">
-      <div style="display: flex; align-items: center;">
-        <span class="nav-brand-title">Analisis Risiko Saham Perbankan</span>
-        <span class="nav-brand-subtitle">BBCA, BBRI, BMRI, BBNI (2015 - 2026)</span>
-      </div>
+  <header class="nav-wrapper">
+    <nav class="floating-nav">
+      <a href="#" class="nav-brand">
+        <div class="brand-icon">
+          <i data-lucide="shield-alert" style="width: 16px; height: 16px;"></i>
+        </div>
+        <div class="brand-title">BANKING <span>RISK</span></div>
+      </a>
 
-      <div class="nav-actions">
-        <a href="https://portfolio-hub-coral-eight.vercel.app/" class="nav-link-btn">
-          ← Kembali ke Portfolio Hub
-        </a>
-        <a href="https://github.com/izamrosiawan/indonesian-banks-risk-analytics" target="_blank" class="nav-link-btn nav-link-primary" rel="noreferrer">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-          <span>GitHub</span>
-        </a>
-      </div>
-    </div>
+      <ul class="nav-menu">
+        <li><a href="#hero-chapter" class="nav-link active">Overview</a></li>
+        <li><a href="#pillars-chapter" class="nav-link">Solvency Pillars</a></li>
+        <li><a href="#simulator-chapter" class="nav-link">Stress-Test Lab</a></li>
+        <li><a href="#analytics-chapter" class="nav-link">Big 4 Analytics</a></li>
+        <li><a href="#research-chapter" class="nav-link">Methodology</a></li>
+      </ul>
+
+      <a href="notebook.ipynb" class="nav-action-btn" target="_blank" title="Open Jupyter Notebook">
+        <i data-lucide="file-code" style="width: 15px; height: 15px;"></i>
+      </a>
+    </nav>
   </header>
 
-  <main class="main-wrapper">
-    
-    <!-- Overview Header -->
-    <section class="overview-header reveal-on-scroll">
-      <span class="overview-tag">Riset Kuantitatif & Keuangan Empiris</span>
-      <h1 class="overview-title">
-        Analisis Profil Risiko, Imbal Hasil, dan Optimasi Portofolio Empat Bank Terbesar di Indonesia
+  <section class="hero-chapter" id="hero-chapter">
+    <canvas id="hero-canvas"></canvas>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span class="pulse-dot"></span>
+        <span>INDONESIAN BANKING SOLVENCY & RISK LAB</span>
+      </div>
+
+      <h1 class="hero-h1">
+        Banking Solvency <br>
+        <span class="hero-highlight">& Systemic Risk Analytics</span>
       </h1>
-      <p class="overview-desc">
-        Kajian terhadap 2.840 hari perdagangan bursa (Januari 2015 - Januari 2026) untuk saham BBCA, BBRI, BMRI, dan BBNI. Menilai distribusi risiko ekor, uji stasioneritas Augmented Dickey-Fuller (ADF), dan alokasi efisien Markowitz.
+
+      <p class="hero-subtext">
+        Pembedahan komprehensif risiko kredit, ketahanan permodalan Basel III, dan simulasi stress-test terhadap 4 Bank Terbesar di Indonesia (BBCA, BBRI, BMRI, BBNI) periode 2015-2024.
       </p>
-    </section>
 
-    <!-- Key Metrics 4-Column Grid -->
-    <section class="stat-cards-grid reveal-on-scroll">
-      <div class="stat-card">
-        <span class="stat-card-label">Return Tahunan BBCA</span>
-        <span class="stat-card-value font-mono" style="color: var(--color-positive);" id="kpi-bbca-ret" data-target="10.14" data-prefix="+" data-suffix="%" data-decimals="2">+10.14%</span>
-        <p class="stat-card-note">Pertumbuhan modal +213.3% sejak 2015 dengan volatilitas terendah.</p>
-      </div>
-
-      <div class="stat-card">
-        <span class="stat-card-label">Portofolio Max Sharpe</span>
-        <span class="stat-card-value font-mono" style="color: var(--color-bbca);" id="kpi-opt-sharpe" data-target="0.207" data-prefix="" data-suffix="" data-decimals="3">0.207</span>
-        <p class="stat-card-note">Alokasi optimal: 72.4% BBCA dan 27.6% BMRI.</p>
-      </div>
-
-      <div class="stat-card">
-        <span class="stat-card-label">Volatilitas Portofolio Rata</span>
-        <span class="stat-card-value font-mono" id="kpi-ew-vol" data-target="25.70" data-prefix="" data-suffix="%" data-decimals="2">25.70%</span>
-        <p class="stat-card-note">Diversifikasi berhasil meredam risiko spesifik emiten tunggal.</p>
-      </div>
-
-      <div class="stat-card">
-        <span class="stat-card-label">Drawdown Maksimum</span>
-        <span class="stat-card-value font-mono" style="color: var(--color-negative);" id="kpi-mdd-val" data-target="48.37" data-prefix="-" data-suffix="%" data-decimals="2">-48.37%</span>
-        <p class="stat-card-note">Titik penurunan terdalam saat krisis pandemi global Maret 2020.</p>
-      </div>
-    </section>
-
-    <!-- Section 1: Trajectory Chart Panel -->
-    <section class="content-section reveal-on-scroll">
-      <div class="section-title-wrap">
-        <h2 class="section-h2">1. Trajektori Pertumbuhan Nilai Investasi (Basis 100)</h2>
-        <p class="section-p">Normalisasi harga penutupan saham ke basis 100 pada awal periode observasi (Januari 2015).</p>
-      </div>
-
-      <div class="chart-panel-card">
-        <div class="chart-controls-bar">
-          <!-- Segmented Time Filter -->
-          <div class="segmented-button-group" id="period-selector">
-            <button type="button" class="segment-btn active" data-period="ALL">Semua (11 Tahun)</button>
-            <button type="button" class="segment-btn" data-period="5Y">5 Tahun</button>
-            <button type="button" class="segment-btn" data-period="3Y">3 Tahun</button>
-            <button type="button" class="segment-btn" data-period="1Y">1 Tahun</button>
+      <div class="hero-actions">
+        <a href="#simulator-chapter" class="btn-island-primary">
+          <span>Launch Stress-Test Lab</span>
+          <div class="btn-island-icon-pod">
+            <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
           </div>
+        </a>
+        <a href="#analytics-chapter" class="btn-island-secondary">
+          <span>Explore Big 4 Data</span>
+          <div class="btn-island-icon-pod-subtle">
+            <i data-lucide="line-chart" style="width: 14px; height: 14px;"></i>
+          </div>
+        </a>
+      </div>
 
-          <!-- Asset Filter Pills -->
-          <div class="asset-pill-group" id="asset-filters">
-            <button type="button" class="asset-pill active" data-filter="all">Semua Aset</button>
-            <button type="button" class="asset-pill" data-filter="ew">
-              <span class="pill-dot dot-port"></span> Portofolio Rata
-            </button>
-            <button type="button" class="asset-pill" data-filter="BBCA">
-              <span class="pill-dot dot-bbca"></span> BBCA
-            </button>
-            <button type="button" class="asset-pill" data-filter="BBRI">
-              <span class="pill-dot dot-bbri"></span> BBRI
-            </button>
-            <button type="button" class="asset-pill" data-filter="BMRI">
-              <span class="pill-dot dot-bmri"></span> BMRI
-            </button>
-            <button type="button" class="asset-pill" data-filter="BBNI">
-              <span class="pill-dot dot-bbni"></span> BBNI
-            </button>
+      <div class="double-bezel-hero-deck">
+        <div class="hero-deck-core">
+          <div class="telemetry-col">
+            <span class="telemetry-num">Big 4 Banks</span>
+            <span class="telemetry-desc">Monitored Portfolios</span>
+          </div>
+          <div class="telemetry-col">
+            <span class="telemetry-num">23.4%</span>
+            <span class="telemetry-desc">Average CAR Buffer</span>
+          </div>
+          <div class="telemetry-col">
+            <span class="telemetry-num">2.14%</span>
+            <span class="telemetry-desc">Average Gross NPL</span>
+          </div>
+          <div class="telemetry-col">
+            <span class="telemetry-num">10 Years</span>
+            <span class="telemetry-desc">Longitudinal Horizon</span>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="chart-view-box">
-          <canvas id="mainChart"></canvas>
+  <div class="stream-ticker-section">
+    <div class="stream-ticker-track">
+      <span class="ticker-item"><span class="ticker-dot"></span> BBCA: CAR 29.4% &bull; NPL 1.9% &bull; LDR 82.5% &bull; NIM 5.5%</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> BBRI: CAR 25.2% &bull; NPL 2.9% &bull; LDR 87.1% &bull; NIM 6.8%</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> BMRI: CAR 22.0% &bull; NPL 1.2% &bull; LDR 89.4% &bull; NIM 4.9%</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> BBNI: CAR 21.8% &bull; NPL 2.1% &bull; LDR 85.3% &bull; NIM 4.6%</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> BASEL III BUFFER: 100% REGULATORY PASSING RATE</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> BBCA: CAR 29.4% &bull; NPL 1.9% &bull; LDR 82.5% &bull; NIM 5.5%</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> BBRI: CAR 25.2% &bull; NPL 2.9% &bull; LDR 87.1% &bull; NIM 6.8%</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> BMRI: CAR 22.0% &bull; NPL 1.2% &bull; LDR 89.4% &bull; NIM 4.9%</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> BBNI: CAR 21.8% &bull; NPL 2.1% &bull; LDR 85.3% &bull; NIM 4.6%</span>
+      <span class="ticker-item"><span class="ticker-dot"></span> BASEL III BUFFER: 100% REGULATORY PASSING RATE</span>
+    </div>
+  </div>
+
+  <section class="chapter-section" id="pillars-chapter">
+    <div class="chapter-heading-box">
+      <span class="chapter-eyebrow">Financial Architecture</span>
+      <h2 class="chapter-title">The 4 Pillars of Banking Solvency</h2>
+      <p class="chapter-desc">
+        Indikator kunci kesehatan neraca perbankan menurut standar Bank Indonesia dan Otoritas Jasa Keuangan (OJK).
+      </p>
+    </div>
+
+    <div class="balanced-bezel-grid">
+      <div class="double-bezel-card">
+        <div class="bezel-core-box">
+          <div>
+            <div class="bezel-top-row">
+              <div class="bezel-icon-pod"><i data-lucide="shield"></i></div>
+              <span class="bezel-badge">Basel III Core</span>
+            </div>
+            <h3 class="bezel-h3">Permodalan & Rasio CAR</h3>
+            <p class="bezel-p">Tingkat kecukupan modal (*Capital Adequacy Ratio*) bank-bank besar Indonesia rata-rata melampaui 20%, jauh di atas ambang batas regulasi 8%.</p>
+          </div>
+          <div class="bezel-bottom-meta">
+            <span class="meta-label">Regulatory Min:</span>
+            <span class="meta-val">8.0% (Buffer > 20%)</span>
+          </div>
         </div>
       </div>
-    </section>
 
-    <!-- Section 2: Markowitz Frontier & Dynamic Simulator -->
-    <section class="content-section reveal-on-scroll">
-      <div class="section-title-wrap">
-        <h2 class="section-h2">2. Teori Portofolio Markowitz & Simulator Alokasi</h2>
-        <p class="section-p">Menghitung imbal hasil ekspektasi dan risiko gabungan menggunakan matriks kovarians terrealisasi.</p>
-      </div>
-
-      <div class="workbench-layout">
-        
-        <!-- Left: Frontier Chart -->
-        <div class="workbench-card">
-          <div class="card-header-line">
-            <div>
-              <div class="card-h3">Kurva Batas Efisiensi (Efficient Frontier)</div>
-              <div class="card-subtext">Optimasi Mean-Variance Kuadratik</div>
+      <div class="double-bezel-card">
+        <div class="bezel-core-box">
+          <div>
+            <div class="bezel-top-row">
+              <div class="bezel-icon-pod"><i data-lucide="alert-triangle"></i></div>
+              <span class="bezel-badge">Credit Quality</span>
             </div>
+            <h3 class="bezel-h3">Kualitas Kredit & NPL Gross</h3>
+            <p class="bezel-p">Rasio kredit macet (*Non-Performing Loan*) terkendali di kisaran 1.8% s/d 2.6%, didukung oleh rasio pencadangan CKPN di atas 200%.</p>
           </div>
-
-          <div class="frontier-chart-box">
-            <canvas id="frontierCanvas"></canvas>
-          </div>
-
-          <div class="frontier-callout-grid">
-            <div class="callout-cell">
-              <span class="callout-cell-title">Portofolio Max Sharpe</span>
-              <span class="callout-cell-metric">Return 10.14% • Sharpe 0.207</span>
-              <span class="callout-cell-desc">72.4% BBCA + 27.6% BMRI</span>
-            </div>
-            <div class="callout-cell">
-              <span class="callout-cell-title">Portofolio Min Volatilitas</span>
-              <span class="callout-cell-metric" style="color: var(--color-bbca);">Vol 24.12% • Sharpe 0.208</span>
-              <span class="callout-cell-desc">88.5% BBCA + 11.5% BMRI</span>
-            </div>
+          <div class="bezel-bottom-meta">
+            <span class="meta-label">NPL Ceiling:</span>
+            <span class="meta-val">&lt; 5.0% OJK Limit</span>
           </div>
         </div>
+      </div>
 
-        <!-- Right: Simulator Controls -->
-        <div class="workbench-card">
-          <div class="card-header-line">
-            <div>
-              <div class="card-h3">Simulator Alokasi Modal</div>
-              <div class="card-subtext">Sesuaikan slider untuk melihat kalkulasi risiko seketika</div>
+      <div class="double-bezel-card">
+        <div class="bezel-core-box">
+          <div>
+            <div class="bezel-top-row">
+              <div class="bezel-icon-pod"><i data-lucide="droplet"></i></div>
+              <span class="bezel-badge">Liquidity Deck</span>
             </div>
-            <button type="button" class="nav-link-btn" id="btn-reset-weights" style="padding: 4px 10px; font-size: 11.5px;">
-              Reset (25% Rata)
-            </button>
+            <h3 class="bezel-h3">Likuiditas & Penyaluran LDR</h3>
+            <p class="bezel-p">Rasio intermediasi kredit terhadap simpanan (*Loan to Deposit Ratio*) berada pada zona nyaman 80-90% untuk memitigasi *funding squeeze*.</p>
+          </div>
+          <div class="bezel-bottom-meta">
+            <span class="meta-label">Target Koridor:</span>
+            <span class="meta-val">78% - 92% LDR</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="double-bezel-card">
+        <div class="bezel-core-box">
+          <div>
+            <div class="bezel-top-row">
+              <div class="bezel-icon-pod"><i data-lucide="trending-up"></i></div>
+              <span class="bezel-badge">Profit Engine</span>
+            </div>
+            <h3 class="bezel-h3">Profitabilitas & Marjin NIM</h3>
+            <p class="bezel-p">Marjin bunga bersih (*Net Interest Margin*) bank Indonesia (4.5% - 7.0%) termasuk yang tertinggi di ASEAN berkat kekuatan dana murah CASA.</p>
+          </div>
+          <div class="bezel-bottom-meta">
+            <span class="meta-label">CASA Deposit Share:</span>
+            <span class="meta-val">> 65% Low-Cost Funds</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="simulator-chapter">
+    <div class="chapter-heading-box">
+      <span class="chapter-eyebrow">Simulation Laboratory</span>
+      <h2 class="chapter-title">Bank Solvency Stress-Test Lab</h2>
+      <p class="chapter-desc">
+        Uji ketahanan solvabilitas bank di bawah skenario guncangan makroekonomi (kenaikan NPL drastis, kontraksi modal, dan pengetatan likuiditas).
+      </p>
+    </div>
+
+    <div class="studio-split-console">
+      <div class="console-bezel-outer">
+        <div class="console-bezel-core">
+          <div class="console-header-row">
+            <div class="console-title-text">
+              <i data-lucide="sliders" style="color: var(--color-primary);"></i>
+              <span>Stress-Test Parameters</span>
+            </div>
+            <div class="preset-chip-group">
+              <button class="preset-chip active" data-car="29.4" data-npl="1.9" data-ldr="82.5" data-nim="5.5">BBCA (Conservative)</button>
+              <button class="preset-chip" data-car="25.2" data-npl="2.9" data-ldr="87.1" data-nim="6.8">BBRI (Micro Heavy)</button>
+              <button class="preset-chip" data-car="22.0" data-npl="1.2" data-ldr="89.4" data-nim="4.9">BMRI (Corporate)</button>
+              <button class="preset-chip" data-car="21.8" data-npl="2.1" data-ldr="85.3" data-nim="4.6">BBNI (Balanced)</button>
+            </div>
           </div>
 
-          <!-- Stress Test Dropdown -->
-          <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px;">
-            <span style="color: var(--text-secondary);">Skenario Stress Test:</span>
-            <select id="stress-scenario-select" class="font-mono" style="padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border-subtle); background-color: var(--bg-subtle); color: var(--text-main); font-size: 12px;">
-              <option value="baseline">Kondisi Normal (Baseline)</option>
-              <option value="rate_hike">Kenaikan Suku Bunga (+150 bps)</option>
-              <option value="liquidity_shock">Penarikan Modal Asing (-20%)</option>
-              <option value="npl_spike">Lonjakan Risiko NPL (+3.5%)</option>
-            </select>
-          </div>
-
-          <div class="slider-list">
-            <div class="slider-item">
+          <div class="tactile-sliders-matrix">
+            <div class="tactile-slider-unit">
               <div class="slider-label-row">
-                <span style="color: var(--color-bbca);">BBCA (Bank Central Asia)</span>
-                <span class="slider-weight-val" id="txt-w-bbca">25%</span>
+                <span class="slider-name">Capital Adequacy Ratio (CAR %)</span>
+                <span class="slider-dynamic-val" id="val-car">23.5%</span>
               </div>
-              <input type="range" class="clean-slider" id="range-bbca" min="0" max="100" value="25">
+              <input type="range" id="sim-car" class="neon-range-slider" min="6" max="35" step="0.1" value="23.5">
             </div>
 
-            <div class="slider-item">
+            <div class="tactile-slider-unit">
               <div class="slider-label-row">
-                <span style="color: var(--color-bbri);">BBRI (Bank Rakyat Indonesia)</span>
-                <span class="slider-weight-val" id="txt-w-bbri">25%</span>
+                <span class="slider-name">Gross NPL (%)</span>
+                <span class="slider-dynamic-val" id="val-npl">2.1%</span>
               </div>
-              <input type="range" class="clean-slider" id="range-bbri" min="0" max="100" value="25">
+              <input type="range" id="sim-npl" class="neon-range-slider" min="0.5" max="12.0" step="0.1" value="2.1">
             </div>
 
-            <div class="slider-item">
+            <div class="tactile-slider-unit">
               <div class="slider-label-row">
-                <span style="color: var(--color-bmri);">BMRI (Bank Mandiri)</span>
-                <span class="slider-weight-val" id="txt-w-bmri">25%</span>
+                <span class="slider-name">Loan to Deposit Ratio (LDR %)</span>
+                <span class="slider-dynamic-val" id="val-ldr">84.5%</span>
               </div>
-              <input type="range" class="clean-slider" id="range-bmri" min="0" max="100" value="25">
+              <input type="range" id="sim-ldr" class="neon-range-slider" min="60" max="115" step="0.5" value="84.5">
             </div>
 
-            <div class="slider-item">
+            <div class="tactile-slider-unit">
               <div class="slider-label-row">
-                <span style="color: var(--color-bbni);">BBNI (Bank Negara Indonesia)</span>
-                <span class="slider-weight-val" id="txt-w-bbni">25%</span>
+                <span class="slider-name">Net Interest Margin (NIM %)</span>
+                <span class="slider-dynamic-val" id="val-nim">5.2%</span>
               </div>
-              <input type="range" class="clean-slider" id="range-bbni" min="0" max="100" value="25">
+              <input type="range" id="sim-nim" class="neon-range-slider" min="1.0" max="10.0" step="0.1" value="5.2">
             </div>
           </div>
-
-          <div class="readout-dashboard font-mono">
-            <div class="readout-col">
-              <span class="readout-label">Total Bobot</span>
-              <span class="readout-val" id="sim-total-alloc">100%</span>
-            </div>
-            <div class="readout-col">
-              <span class="readout-label">Return Exp</span>
-              <span class="readout-val" style="color: var(--color-positive);" id="sim-res-return">8.19%</span>
-            </div>
-            <div class="readout-col">
-              <span class="readout-label">Volatilitas</span>
-              <span class="readout-val" id="sim-res-vol">25.70%</span>
-            </div>
-            <div class="readout-col">
-              <span class="readout-label">Sharpe Ratio</span>
-              <span class="readout-val" style="color: var(--color-bbca);" id="sim-res-sharpe">0.124</span>
-            </div>
-          </div>
-
         </div>
       </div>
-    </section>
 
-    <!-- Section 3: Data Tables -->
-    <section class="content-section reveal-on-scroll">
-      <div class="section-title-wrap">
-        <h2 class="section-h2">3. Diagnostik Risiko Ekor & Matriks Fundamental</h2>
-        <p class="section-p">Ringkasan Value at Risk (VaR 95%), Expected Shortfall, dan uji asumsi klasik.</p>
+      <div class="console-output-stack">
+        <div class="gauge-console-card">
+          <div class="conic-gauge-outer" id="sim-gauge-progress">
+            <div class="conic-gauge-core">
+              <span class="gauge-score-display" id="sim-health-value">91</span>
+              <span class="gauge-score-sub">Solvency Index / 100</span>
+            </div>
+          </div>
+
+          <div id="sim-tier-badge" class="tier-status-pill">
+            <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>
+            <span id="sim-status-text">HIGHLY SOLVENT & RESILIENT</span>
+          </div>
+
+          <p class="tier-narrative" id="sim-explanation-text">
+            Permodalan prima (CAR 23.5%) dengan bantalan tebal. Mampu menyerap lonjakan NPL hingga skenario stress-test terberat.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="analytics-chapter">
+    <div class="chapter-heading-box">
+      <span class="chapter-eyebrow">Longitudinal Data Visualizations</span>
+      <h2 class="chapter-title">Big 4 Equity & Risk Analytics</h2>
+      <p class="chapter-desc">
+        Perbandingan historis pertumbuhan harga saham, rasio Sharpe, dan profil risiko 4 bank terbesar Indonesia.
+      </p>
+    </div>
+
+    <div class="analytics-cards-grid">
+      <div class="double-bezel-card">
+        <div class="bezel-core-box">
+          <div class="console-title-text" style="font-size: 1.1rem;">
+            <i data-lucide="trending-up" style="color: var(--color-primary);"></i>
+            <span>Stock Price Growth Trajectory (IDR)</span>
+          </div>
+          <div class="chart-canvas-box">
+            <canvas id="banksEquityChart"></canvas>
+          </div>
+        </div>
       </div>
 
-      <div class="tables-duo">
-        
-        <!-- Table 1 -->
-        <div class="table-wrapper-card">
-          <div class="card-h3">Estimasi Risiko Pasar (VaR & Expected Shortfall 95%)</div>
-          <div class="table-scrollable">
-            <table class="clean-table font-mono">
-              <thead>
-                <tr>
-                  <th>Emiten</th>
-                  <th>VaR 95%</th>
-                  <th>ES 95%</th>
-                  <th>ADF Stat</th>
-                  <th>Kurtosis</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong style="color: var(--color-bbca);">BBCA</strong></td>
-                  <td style="color: var(--color-positive);">2.28%</td>
-                  <td style="color: var(--color-positive);">3.46%</td>
-                  <td>-9.904</td>
-                  <td>7.514 (Fat-Tail)</td>
-                </tr>
-                <tr>
-                  <td><strong style="color: var(--color-bbri);">BBRI</strong></td>
-                  <td>3.10%</td>
-                  <td>4.58%</td>
-                  <td>-28.192</td>
-                  <td>4.869</td>
-                </tr>
-                <tr>
-                  <td><strong style="color: var(--color-bmri);">BMRI</strong></td>
-                  <td>3.18%</td>
-                  <td>4.63%</td>
-                  <td>-19.593</td>
-                  <td>4.128</td>
-                </tr>
-                <tr>
-                  <td><strong style="color: var(--color-bbni);">BBNI</strong></td>
-                  <td style="color: var(--color-negative);">3.25%</td>
-                  <td style="color: var(--color-negative);">4.72%</td>
-                  <td>-50.163</td>
-                  <td>3.507</td>
-                </tr>
-              </tbody>
-            </table>
+      <div class="double-bezel-card">
+        <div class="bezel-core-box">
+          <div class="console-title-text" style="font-size: 1.1rem;">
+            <i data-lucide="bar-chart-3" style="color: var(--color-primary);"></i>
+            <span>Risk-Adjusted Performance (Sharpe Ratio)</span>
           </div>
-          <p class="table-note-text">Uji Jarque-Bera menolak asumsi normalitas (p < 0.001), membuktikan sebaran return harian memiliki ekor tebal leptokurtik.</p>
+          <div class="chart-canvas-box">
+            <canvas id="banksMetricsChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter-section" id="research-chapter">
+    <div class="chapter-heading-box">
+      <span class="chapter-eyebrow">Scientific Methodology</span>
+      <h2 class="chapter-title">Risk & Solvency Telemetry</h2>
+      <p class="chapter-desc">
+        Formulasi kuantitatif yang menggerakkan penilaian modal, Value at Risk (VaR), dan imbal hasil tertimbang risiko.
+      </p>
+    </div>
+
+    <div class="math-cards-grid">
+      <div class="double-bezel-card">
+        <div class="bezel-core-box">
+          <div class="math-card-header">
+            <span class="math-index-pill">01</span>
+            <h3 class="bezel-h3" style="font-size: 1.15rem; margin-bottom: 0;">Capital Adequacy Ratio</h3>
+          </div>
+          <p class="bezel-p">Rasio kecukupan modal terhadap Aktiva Tertimbang Menurut Risiko (ATMR).</p>
+          <div class="katex-formula-box">
+            $$\text{CAR} = \frac{\text{Total Capital}}{\text{ATMR}} \times 100\%$$
+          </div>
+        </div>
+      </div>
+
+      <div class="double-bezel-card">
+        <div class="bezel-core-box">
+          <div class="math-card-header">
+            <span class="math-index-pill">02</span>
+            <h3 class="bezel-h3" style="font-size: 1.15rem; margin-bottom: 0;">Parametric VaR (95%)</h3>
+          </div>
+          <p class="bezel-p">Estimasi kerugian maksimum portofolio pada tingkat keyakinan 95%.</p>
+          <div class="katex-formula-box">
+            $$\text{VaR}_{\alpha} = -\left(\mu + z_{\alpha} \cdot \sigma\right)$$
+          </div>
+        </div>
+      </div>
+
+      <div class="double-bezel-card">
+        <div class="bezel-core-box">
+          <div class="math-card-header">
+            <span class="math-index-pill">03</span>
+            <h3 class="bezel-h3" style="font-size: 1.15rem; margin-bottom: 0;">Sharpe Ratio</h3>
+          </div>
+          <p class="bezel-p">Pengukuran premi imbal hasil investasi di atas suku bunga bebas risiko BI-Rate.</p>
+          <div class="katex-formula-box">
+            $$\text{Sharpe} = \frac{R_p - R_f}{\sigma_p}$$
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="studio-footer-chapter">
+    <div class="footer-inner-wrapper">
+      <div class="footer-top-row">
+        <div class="footer-brand-box">
+          <div class="brand-title" style="font-size: 1.2rem;">BANKING <span>RISK</span></div>
+          <p class="footer-tagline">
+            Analisis data komputasional kesehatan perbankan, permodalan Basel III, dan stress-testing perbankan Indonesia.
+          </p>
         </div>
 
-        <!-- Table 2 -->
-        <div class="table-wrapper-card">
-          <div class="card-h3">Fundamental Kunci & Matriks Korelasi</div>
-          <div class="table-scrollable">
-            <table class="clean-table font-mono">
-              <thead>
-                <tr>
-                  <th>Bank</th>
-                  <th>ROE</th>
-                  <th>NPL</th>
-                  <th>NIM</th>
-                  <th>PBV</th>
-                  <th>Korelasi BBCA</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong style="color: var(--color-bbca);">BBCA</strong></td>
-                  <td style="color: var(--color-positive);">20.5%</td>
-                  <td>1.9%</td>
-                  <td>5.5%</td>
-                  <td>4.8x</td>
-                  <td>1.000</td>
-                </tr>
-                <tr>
-                  <td><strong style="color: var(--color-bbri);">BBRI</strong></td>
-                  <td>18.2%</td>
-                  <td>3.1%</td>
-                  <td style="color: var(--color-positive);">7.8%</td>
-                  <td>2.3x</td>
-                  <td>0.582</td>
-                </tr>
-                <tr>
-                  <td><strong style="color: var(--color-bmri);">BMRI</strong></td>
-                  <td style="color: var(--color-positive);">21.1%</td>
-                  <td style="color: var(--color-positive);">1.2%</td>
-                  <td>5.4%</td>
-                  <td>2.1x</td>
-                  <td>0.621</td>
-                </tr>
-                <tr>
-                  <td><strong style="color: var(--color-bbni);">BBNI</strong></td>
-                  <td>14.5%</td>
-                  <td>2.3%</td>
-                  <td>4.4%</td>
-                  <td>1.2x</td>
-                  <td>0.554</td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="footer-nav-columns">
+          <div class="footer-nav-col">
+            <span class="footer-col-header">Navigation</span>
+            <a href="#hero-chapter" class="footer-nav-link">Overview</a>
+            <a href="#pillars-chapter" class="footer-nav-link">Solvency Pillars</a>
+            <a href="#simulator-chapter" class="footer-nav-link">Stress-Test Lab</a>
+            <a href="#analytics-chapter" class="footer-nav-link">Analytics</a>
           </div>
-          <p class="table-note-text">Korelasi terendah antara BBCA dan BBNI (0.554) memberikan efisiensi diversifikasi optimal untuk menekan risiko portofolio.</p>
+          <div class="footer-nav-col">
+            <span class="footer-col-header">Resources</span>
+            <a href="notebook.ipynb" class="footer-nav-link" target="_blank">Jupyter Notebook (.ipynb)</a>
+            <a href="README.md" class="footer-nav-link" target="_blank">Research Report</a>
+            <a href="https://github.com/izamrosiawan/indonesian-banks-risk-analytics" class="footer-nav-link" target="_blank">GitHub Repository</a>
+          </div>
         </div>
-
       </div>
-    </section>
 
-  </main>
-
-  <!-- Clean Institutional Footer -->
-  <footer class="clean-footer">
-    <div class="footer-inner-box">
-      <div>
-        <span>Kajian Kuantitatif Risiko Saham Perbankan Indonesia (2015-2026)</span>
-      </div>
-      <div class="font-mono">
-        <span>Izam Rosiawan • Universitas Telkom Surabaya</span>
+      <div class="footer-bottom-telemetry">
+        <span>&copy; 2026 Indonesian Banks Risk Analytics Research. Deterministic Seed=42.</span>
+        <span>Double-Bezel Architecture &bull; GSAP Motion &bull; KaTeX</span>
       </div>
     </div>
   </footer>

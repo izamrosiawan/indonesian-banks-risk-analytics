@@ -1,396 +1,353 @@
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
 document.addEventListener('DOMContentLoaded', () => {
+  window.scrollTo(0, 0);
+  if (window.lucide) {
+    lucide.createIcons();
+  }
 
-  const rawData = {
-    dates: ["2015-01", "2016-01", "2017-01", "2018-01", "2019-01", "2020-01", "2020-04", "2021-01", "2022-01", "2023-01", "2024-01", "2025-01", "2026-01"],
-    normalized: {
-      BBCA: [100.0, 108.2, 126.5, 172.1, 204.8, 260.4, 185.2, 252.1, 275.4, 342.1, 388.5, 412.0, 428.5],
-      BBRI: [100.0, 94.5, 102.1, 148.2, 155.0, 192.1, 112.5, 184.2, 198.5, 235.1, 272.4, 285.0, 296.2],
-      BMRI: [100.0, 89.2, 105.4, 138.5, 142.1, 168.2, 98.4, 145.2, 178.4, 218.2, 258.1, 270.4, 281.0],
-      BBNI: [100.0, 81.5, 92.4, 142.0, 138.4, 128.5, 68.2, 108.4, 132.1, 165.4, 192.5, 198.2, 204.1],
-      EquallyWeighted: [100.0, 93.35, 106.6, 150.2, 160.075, 187.3, 116.075, 172.475, 196.1, 240.2, 277.875, 291.4, 302.45]
+  const sampleDates = ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024"];
+  const bbcaSeries = [1.0, 1.18, 1.45, 1.72, 2.15, 2.05, 2.45, 2.95, 3.25, 3.75];
+  const bbriSeries = [1.0, 1.05, 1.35, 1.55, 1.85, 1.65, 1.95, 2.40, 2.75, 2.90];
+  const bmriSeries = [1.0, 0.98, 1.25, 1.40, 1.68, 1.45, 1.75, 2.25, 2.65, 2.85];
+  const bbniSeries = [1.0, 0.92, 1.20, 1.35, 1.55, 1.25, 1.48, 1.85, 2.10, 2.25];
+
+  const banksSharpe = [
+    { bank: "BBCA", sharpe: 1.18, returnPct: 15.8 },
+    { bank: "BBRI", sharpe: 0.92, returnPct: 13.5 },
+    { bank: "BMRI", sharpe: 0.88, returnPct: 12.9 },
+    { bank: "BBNI", sharpe: 0.72, returnPct: 10.4 }
+  ];
+
+  const heroCanvas = document.getElementById('hero-canvas');
+  if (heroCanvas) {
+    const ctx = heroCanvas.getContext('2d');
+    let width = (heroCanvas.width = heroCanvas.offsetWidth);
+    let height = (heroCanvas.height = heroCanvas.offsetHeight);
+
+    window.addEventListener('resize', () => {
+      width = heroCanvas.width = heroCanvas.offsetWidth;
+      height = heroCanvas.height = heroCanvas.offsetHeight;
+    });
+
+    const particles = [];
+    const numParticles = 35;
+    for (let i = 0; i < numParticles; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.5 + 1,
+        speedX: (Math.random() - 0.5) * 0.25,
+        speedY: (Math.random() - 0.5) * 0.25,
+        opacity: Math.random() * 0.4 + 0.15
+      });
     }
-  };
 
-  const covMatrix = {
-    BBCA: { BBCA: 0.00038, BBRI: 0.00028, BMRI: 0.00030, BBNI: 0.00029 },
-    BBRI: { BBCA: 0.00028, BBRI: 0.00062, BMRI: 0.00045, BBNI: 0.00048 },
-    BMRI: { BBCA: 0.00030, BBRI: 0.00045, BMRI: 0.00058, BBNI: 0.00046 },
-    BBNI: { BBCA: 0.00029, BBRI: 0.00048, BMRI: 0.00046, BBNI: 0.00071 }
-  };
+    function renderCanvas() {
+      ctx.clearRect(0, 0, width, height);
 
-  const expReturns = { BBCA: 0.142, BBRI: 0.115, BMRI: 0.118, BBNI: 0.082 };
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.x += p.speedX;
+        p.y += p.speedY;
 
-  let activePeriod = 'ALL';
-  let activeFilter = 'all';
-  let mainChart = null;
-  let frontierChart = null;
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
 
-  initScrollReveal();
-  initAnimatedCounters();
-  initMainChart();
-  initFrontierChart();
-  initPortfolioSimulator();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(16, 185, 129, ${p.opacity * 0.5})`;
+        ctx.fill();
 
-  function initScrollReveal() {
-    const reveals = document.querySelectorAll('.reveal-on-scroll');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed');
+        for (let j = i + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(16, 185, 129, ${0.1 * (1 - dist / 120)})`;
+            ctx.lineWidth = 0.6;
+            ctx.stroke();
+          }
         }
-      });
-    }, { threshold: 0.08 });
-
-    reveals.forEach(el => observer.observe(el));
-  }
-
-  function initAnimatedCounters() {
-    const counters = document.querySelectorAll('.stat-card-value[data-target]');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-
-    counters.forEach(c => observer.observe(c));
-  }
-
-  function animateCounter(el) {
-    const target = parseFloat(el.getAttribute('data-target'));
-    const decimals = parseInt(el.getAttribute('data-decimals') || '2', 10);
-    const prefix = el.getAttribute('data-prefix') || '';
-    const suffix = el.getAttribute('data-suffix') || '';
-    const duration = 1200;
-    const startTime = performance.now();
-
-    function update(currentTime) {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1.0);
-      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      const val = target * ease;
-      el.textContent = `${prefix}${val.toFixed(decimals)}${suffix}`;
-      if (progress < 1.0) {
-        requestAnimationFrame(update);
-      } else {
-        el.textContent = `${prefix}${target.toFixed(decimals)}${suffix}`;
       }
+      requestAnimationFrame(renderCanvas);
     }
-    requestAnimationFrame(update);
+    renderCanvas();
   }
 
-  function initMainChart() {
-    const canvas = document.getElementById('mainChart');
-    if (!canvas) return;
+  const simCar = document.getElementById('sim-car');
+  const simNpl = document.getElementById('sim-npl');
+  const simLdr = document.getElementById('sim-ldr');
+  const simNim = document.getElementById('sim-nim');
 
-    mainChart = new Chart(canvas.getContext('2d'), {
-      type: 'line',
-      data: {
-        labels: rawData.dates,
-        datasets: [
-          {
-            label: 'BBCA',
-            data: rawData.normalized.BBCA,
-            borderColor: '#1d4ed8',
-            borderWidth: 2.5,
-            pointRadius: 3,
-            pointHoverRadius: 6,
-            tension: 0.2
+  const valCar = document.getElementById('val-car');
+  const valNpl = document.getElementById('val-npl');
+  const valLdr = document.getElementById('val-ldr');
+  const valNim = document.getElementById('val-nim');
+
+  const simHealthValue = document.getElementById('sim-health-value');
+  const simGaugeProgress = document.getElementById('sim-gauge-progress');
+  const simTierBadge = document.getElementById('sim-tier-badge');
+  const simStatusText = document.getElementById('sim-status-text');
+  const simExplanationText = document.getElementById('sim-explanation-text');
+
+  function calculateSimulator() {
+    if (!simCar || !simNpl || !simLdr || !simNim) return;
+
+    const car = parseFloat(simCar.value);
+    const npl = parseFloat(simNpl.value);
+    const ldr = parseFloat(simLdr.value);
+    const nim = parseFloat(simNim.value);
+
+    valCar.textContent = `${car.toFixed(1)}%`;
+    valNpl.textContent = `${npl.toFixed(1)}%`;
+    valLdr.textContent = `${ldr}%`;
+    valNim.textContent = `${nim.toFixed(1)}%`;
+
+    let score = 50 + (car - 12) * 2.5 - (npl - 2) * 8.0 + (nim - 4) * 4.0 - Math.abs(ldr - 85) * 0.8;
+    score = Math.max(10, Math.min(100, Math.round(score)));
+
+    simHealthValue.textContent = score;
+    const degrees = (score / 100) * 360;
+    simGaugeProgress.style.background = `conic-gradient(var(--color-primary) ${degrees}deg, var(--bg-surface-elevated) ${degrees}deg)`;
+
+    if (score >= 80) {
+      simTierBadge.style.color = '#10b981';
+      simTierBadge.style.borderColor = '#10b981';
+      simStatusText.textContent = 'HIGHLY SOLVENT & RESILIENT';
+      simExplanationText.textContent = `Permodalan prima (CAR ${car}%) dengan bantalan tebal. Mampu menyerap lonjakan NPL hingga skenario stress-test terberat.`;
+    } else if (score >= 60) {
+      simTierBadge.style.color = '#f59e0b';
+      simTierBadge.style.borderColor = '#f59e0b';
+      simStatusText.textContent = 'MODERATE HEALTH BUFFER';
+      simExplanationText.textContent = `Kondisi keuangan berada dalam ambang batas aman OJK, namun memerlukan pemantauan ketat pada kualitas portofolio kredit.`;
+    } else {
+      simTierBadge.style.color = '#ef4444';
+      simTierBadge.style.borderColor = '#ef4444';
+      simStatusText.textContent = 'SOLVENCY WATCHLIST RISK';
+      simExplanationText.textContent = `Tekanan NPL (${npl}%) menggerus modal bank. Diperlukan injeksi modal tambahan atau pengetatan penyaluran kredit.`;
+    }
+  }
+
+  [simCar, simNpl, simLdr, simNim].forEach(input => {
+    if (input) input.addEventListener('input', () => {
+      document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+      calculateSimulator();
+    });
+  });
+
+  document.querySelectorAll('.preset-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      simCar.value = chip.dataset.car;
+      simNpl.value = chip.dataset.npl;
+      simLdr.value = chip.dataset.ldr;
+      simNim.value = chip.dataset.nim;
+      calculateSimulator();
+    });
+  });
+
+  document.querySelectorAll('.bento-card, .console-deck-panel, .gauge-console-card, .math-telemetry-card, .analytics-panel').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.from('.hero-content > *', {
+      opacity: 0,
+      y: 28,
+      duration: 0.9,
+      stagger: 0.12,
+      ease: 'power3.out'
+    });
+
+    document.querySelectorAll('.chapter-section').forEach(section => {
+      const heading = section.querySelector('.chapter-heading-box');
+      const cards = section.querySelectorAll('.bento-card, .math-telemetry-card, .analytics-panel');
+
+      if (heading) {
+        gsap.from(heading, {
+          scrollTrigger: {
+            trigger: heading,
+            start: 'top 85%'
           },
-          {
-            label: 'BBRI',
-            data: rawData.normalized.BBRI,
-            borderColor: '#d97706',
-            borderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 6,
-            tension: 0.2
+          opacity: 0,
+          y: 30,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+      }
+
+      if (cards.length > 0) {
+        gsap.from(cards, {
+          scrollTrigger: {
+            trigger: cards[0],
+            start: 'top 85%'
           },
-          {
-            label: 'BMRI',
-            data: rawData.normalized.BMRI,
-            borderColor: '#0d9488',
-            borderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 6,
-            tension: 0.2
-          },
-          {
-            label: 'BBNI',
-            data: rawData.normalized.BBNI,
-            borderColor: '#7c3aed',
-            borderWidth: 2,
-            pointRadius: 3,
-            pointHoverRadius: 6,
-            tension: 0.2
-          },
-          {
-            label: 'Portofolio Rata',
-            data: rawData.normalized.EquallyWeighted,
-            borderColor: '#475569',
-            borderWidth: 1.8,
-            borderDash: [5, 5],
-            pointRadius: 3,
-            pointHoverRadius: 6,
-            tension: 0.2
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 600, easing: 'easeOutQuart' },
-        interaction: { mode: 'index', intersect: false },
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: '#ffffff',
-            titleColor: '#111827',
-            bodyColor: '#4b5563',
-            borderColor: '#e5e7eb',
-            borderWidth: 1,
-            padding: 12,
-            boxPadding: 4,
-            usePointStyle: true,
-            titleFont: { family: 'JetBrains Mono', size: 12, weight: '700' },
-            bodyFont: { family: 'JetBrains Mono', size: 11 },
-            callbacks: {
-              label: (ctx) => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}`
-            }
-          }
+          opacity: 0,
+          y: 35,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: 'power2.out'
+        });
+      }
+    });
+  }
+
+  if (window.renderMathInElement) {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false }
+      ]
+    });
+  }
+
+  let equityChart = null;
+  let metricsChart = null;
+
+  function renderCharts() {
+    const isLight = document.body.classList.contains('light-theme');
+    const textCol = isLight ? '#475569' : '#94a3b8';
+    const gridCol = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
+
+    const eCtx = document.getElementById('banksEquityChart');
+    if (eCtx) {
+      if (equityChart) equityChart.destroy();
+      equityChart = new Chart(eCtx.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: sampleDates,
+          datasets: [
+            { label: 'BBCA', data: bbcaSeries, borderColor: '#10b981', tension: 0.3, borderWidth: 2, pointRadius: 2 },
+            { label: 'BBRI', data: bbriSeries, borderColor: '#3b82f6', tension: 0.3, borderWidth: 1.8, pointRadius: 2 },
+            { label: 'BMRI', data: bmriSeries, borderColor: '#f59e0b', tension: 0.3, borderWidth: 1.8, pointRadius: 2 },
+            { label: 'BBNI', data: bbniSeries, borderColor: '#94a3b8', tension: 0.3, borderWidth: 1.5, pointRadius: 2 }
+          ]
         },
-        scales: {
-          x: {
-            grid: { display: false },
-            ticks: { color: '#6b7280', font: { family: 'JetBrains Mono', size: 11 } }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: textCol, font: { family: 'Plus Jakarta Sans', size: 10 } }
+            }
           },
-          y: {
-            grid: { color: '#f1f3f5' },
-            ticks: {
-              color: '#6b7280',
-              font: { family: 'JetBrains Mono', size: 11 },
-              callback: (v) => `${v}`
+          scales: {
+            y: {
+              grid: { color: gridCol },
+              ticks: { color: textCol, font: { family: 'JetBrains Mono', size: 10 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: textCol, font: { family: 'Plus Jakarta Sans', size: 10 } }
             }
           }
         }
-      }
-    });
-
-    initChartFilters();
-  }
-
-  function initChartFilters() {
-    const periodBtns = document.querySelectorAll('#period-selector .segment-btn');
-    periodBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        periodBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activePeriod = btn.dataset.period;
-        updateMainChartData();
       });
-    });
+    }
 
-    const filterBtns = document.querySelectorAll('#asset-filters .asset-pill');
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeFilter = btn.dataset.filter;
-        updateMainChartData();
-      });
-    });
-  }
-
-  function updateMainChartData() {
-    if (!mainChart) return;
-
-    let sliceIndex = 0;
-    if (activePeriod === '5Y') sliceIndex = 7;
-    else if (activePeriod === '3Y') sliceIndex = 9;
-    else if (activePeriod === '1Y') sliceIndex = 11;
-
-    mainChart.data.labels = rawData.dates.slice(sliceIndex);
-    
-    mainChart.data.datasets.forEach(ds => {
-      const key = ds.label === 'Portofolio Rata' ? 'EquallyWeighted' : ds.label;
-      ds.data = rawData.normalized[key].slice(sliceIndex);
-
-      if (activeFilter === 'all') {
-        ds.hidden = false;
-      } else if (activeFilter === 'ew') {
-        ds.hidden = (ds.label !== 'Portofolio Rata');
-      } else {
-        ds.hidden = (ds.label !== activeFilter);
-      }
-    });
-
-    mainChart.update();
-  }
-
-  function initFrontierChart() {
-    const canvas = document.getElementById('frontierCanvas');
-    if (!canvas) return;
-
-    const frontierCurve = [
-      { x: 24.12, y: 10.02 }, { x: 24.30, y: 10.10 }, { x: 24.81, y: 10.14 },
-      { x: 25.40, y: 11.20 }, { x: 26.20, y: 12.10 }, { x: 27.50, y: 13.00 },
-      { x: 29.10, y: 14.20 }
-    ];
-
-    frontierChart = new Chart(canvas.getContext('2d'), {
-      type: 'scatter',
-      data: {
-        datasets: [
-          {
-            label: 'Efficient Frontier',
-            data: frontierCurve,
-            showLine: true,
-            borderColor: '#1d4ed8',
-            borderWidth: 2,
-            pointRadius: 4,
-            pointBackgroundColor: '#1d4ed8',
-            fill: false,
-            tension: 0.3
-          },
-          {
-            label: 'Max Sharpe (72.4% BBCA + 27.6% BMRI)',
-            data: [{ x: 24.81, y: 10.14 }],
-            pointRadius: 7,
-            pointBackgroundColor: '#047857',
-            pointBorderColor: '#ffffff',
-            pointBorderWidth: 2
-          },
-          {
-            label: 'Min Volatilitas (88.5% BBCA + 11.5% BMRI)',
-            data: [{ x: 24.12, y: 10.02 }],
-            pointRadius: 7,
-            pointBackgroundColor: '#0d9488',
-            pointBorderColor: '#ffffff',
-            pointBorderWidth: 2
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 600, easing: 'easeOutQuart' },
-        interaction: { mode: 'nearest', intersect: false },
-        plugins: {
-          legend: {
-            position: 'top',
-            labels: {
-              color: '#111827',
-              font: { family: 'Plus Jakarta Sans', size: 10.5, weight: '600' },
-              boxWidth: 8,
-              boxHeight: 8
-            }
-          },
-          tooltip: {
-            backgroundColor: '#ffffff',
-            titleColor: '#111827',
-            bodyColor: '#4b5563',
-            borderColor: '#e5e7eb',
-            borderWidth: 1,
-            padding: 10,
-            titleFont: { family: 'JetBrains Mono', size: 11, weight: '700' },
-            bodyFont: { family: 'JetBrains Mono', size: 10.5 },
-            callbacks: {
-              label: (ctx) => ` Vol: ${ctx.raw.x}% | Return: ${ctx.raw.y}%`
-            }
-          }
+    const mCtx = document.getElementById('banksMetricsChart');
+    if (mCtx) {
+      if (metricsChart) metricsChart.destroy();
+      metricsChart = new Chart(mCtx.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: banksSharpe.map(b => b.bank),
+          datasets: [
+            { label: 'Sharpe Ratio', data: banksSharpe.map(b => b.sharpe), backgroundColor: '#10b981b0', borderRadius: 4 },
+            { label: 'Annualized Return (%)', data: banksSharpe.map(b => b.returnPct), backgroundColor: '#3b82f6b0', borderRadius: 4 }
+          ]
         },
-        scales: {
-          x: {
-            title: { display: true, text: 'Volatilitas Tahunan (%)', color: '#6b7280', font: { size: 10.5 } },
-            grid: { color: '#f1f3f5' },
-            ticks: { color: '#6b7280', font: { family: 'JetBrains Mono', size: 10 } }
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: textCol, font: { family: 'Plus Jakarta Sans', size: 10 } }
+            }
           },
-          y: {
-            title: { display: true, text: 'Imbal Hasil Ekspektasi (%)', color: '#6b7280', font: { size: 10.5 } },
-            grid: { color: '#f1f3f5' },
-            ticks: { color: '#6b7280', font: { family: 'JetBrains Mono', size: 10 } }
+          scales: {
+            y: {
+              beginAtZero: true,
+              grid: { color: gridCol },
+              ticks: { color: textCol, font: { family: 'JetBrains Mono', size: 10 } }
+            },
+            x: {
+              grid: { display: false },
+              ticks: { color: textCol, font: { family: 'Plus Jakarta Sans', size: 10 } }
+            }
           }
         }
-      }
-    });
-  }
-
-  function initPortfolioSimulator() {
-    const rBBCA = document.getElementById('range-bbca');
-    const rBBRI = document.getElementById('range-bbri');
-    const rBMRI = document.getElementById('range-bmri');
-    const rBBNI = document.getElementById('range-bbni');
-    const btnReset = document.getElementById('btn-reset-weights');
-    const selectScenario = document.getElementById('stress-scenario-select');
-
-    if (!rBBCA || !rBBRI || !rBMRI || !rBBNI) return;
-
-    function calculatePortfolio() {
-      const w1 = parseFloat(rBBCA.value) / 100;
-      const w2 = parseFloat(rBBRI.value) / 100;
-      const w3 = parseFloat(rBMRI.value) / 100;
-      const w4 = parseFloat(rBBNI.value) / 100;
-      const totalW = w1 + w2 + w3 + w4;
-
-      document.getElementById('txt-w-bbca').textContent = `${rBBCA.value}%`;
-      document.getElementById('txt-w-bbri').textContent = `${rBBRI.value}%`;
-      document.getElementById('txt-w-bmri').textContent = `${rBMRI.value}%`;
-      document.getElementById('txt-w-bbni').textContent = `${rBBNI.value}%`;
-      
-      const allocEl = document.getElementById('sim-total-alloc');
-      if (allocEl) {
-        allocEl.textContent = `${(totalW * 100).toFixed(0)}%`;
-        allocEl.style.color = Math.abs(totalW - 1.0) < 0.01 ? 'var(--color-positive)' : 'var(--color-negative)';
-      }
-
-      let multReturn = 1.0;
-      let multVol = 1.0;
-      if (selectScenario) {
-        const sc = selectScenario.value;
-        if (sc === 'rate_hike') { multReturn = 0.85; multVol = 1.25; }
-        else if (sc === 'liquidity_shock') { multReturn = 0.70; multVol = 1.45; }
-        else if (sc === 'npl_spike') { multReturn = 0.60; multVol = 1.60; }
-      }
-
-      const pReturn = (w1 * expReturns.BBCA + w2 * expReturns.BBRI + w3 * expReturns.BMRI + w4 * expReturns.BBNI) * multReturn;
-
-      const weights = [w1, w2, w3, w4];
-      const keys = ['BBCA', 'BBRI', 'BMRI', 'BBNI'];
-      let varSum = 0;
-      for (let i = 0; i < 4; i++) {
-        for (let j = 0; j < 4; j++) {
-          varSum += weights[i] * weights[j] * covMatrix[keys[i]][keys[j]];
-        }
-      }
-      const dailyVol = Math.sqrt(varSum);
-      const annualVol = dailyVol * Math.sqrt(252) * multVol;
-      const rf = 0.05;
-      const sharpe = annualVol > 0 ? (pReturn - rf) / annualVol : 0;
-
-      const retEl = document.getElementById('sim-res-return');
-      const volEl = document.getElementById('sim-res-vol');
-      const sharpeEl = document.getElementById('sim-res-sharpe');
-
-      if (retEl) retEl.textContent = `${(pReturn * 100).toFixed(2)}%`;
-      if (volEl) volEl.textContent = `${(annualVol * 100).toFixed(2)}%`;
-      if (sharpeEl) sharpeEl.textContent = sharpe.toFixed(3);
-    }
-
-    [rBBCA, rBBRI, rBMRI, rBBNI].forEach(r => r.addEventListener('input', calculatePortfolio));
-    if (selectScenario) selectScenario.addEventListener('change', calculatePortfolio);
-
-    if (btnReset) {
-      btnReset.addEventListener('click', () => {
-        rBBCA.value = 25;
-        rBBRI.value = 25;
-        rBMRI.value = 25;
-        rBBNI.value = 25;
-        if (selectScenario) selectScenario.value = 'baseline';
-        calculatePortfolio();
       });
     }
   }
 
+  renderCharts();
+
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll('.chapter-section').forEach(section => {
+      const heading = section.querySelector('.chapter-heading-box');
+      const cards = section.querySelectorAll('.double-bezel-card, .console-bezel-outer, .gauge-console-card');
+
+      if (heading) {
+        gsap.from(heading, {
+          scrollTrigger: {
+            trigger: heading,
+            start: 'top 88%'
+          },
+          opacity: 0,
+          y: 24,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+      }
+
+      if (cards.length > 0) {
+        gsap.from(cards, {
+          scrollTrigger: {
+            trigger: cards[0],
+            start: 'top 88%'
+          },
+          opacity: 0,
+          y: 28,
+          duration: 0.7,
+          stagger: 0.08,
+          ease: 'power2.out'
+        });
+      }
+    });
+  }
+
+  function triggerKaTeX() {
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: '$$', right: '$$', display: true },
+          { left: '$', right: '$', display: false }
+        ],
+        throwOnError: false
+      });
+    }
+  }
+
+  triggerKaTeX();
+  setTimeout(triggerKaTeX, 300);
 });
