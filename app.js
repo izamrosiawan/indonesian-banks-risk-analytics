@@ -207,8 +207,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  calculateSimulator();
-  renderCharts();
-  renderAllKaTeX();
-  setTimeout(renderAllKaTeX, 200);
+  function initApp() {
+    calculateSimulator();
+    renderCharts();
+    renderAllKaTeX();
+  }
+
+  initApp();
+  setTimeout(initApp, 250);
+  setTimeout(initApp, 750);
+  window.addEventListener('load', initApp);
 });
