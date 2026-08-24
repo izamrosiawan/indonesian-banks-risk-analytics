@@ -336,18 +336,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function triggerKaTeX() {
-    if (window.renderMathInElement) {
-      renderMathInElement(document.body, {
-        delimiters: [
-          { left: '$$', right: '$$', display: true },
-          { left: '$', right: '$', display: false }
-        ],
-        throwOnError: false
-      });
-    }
+  function renderAllKaTeX() {
+    if (!window.katex) return;
+    document.querySelectorAll('.katex-formula-box').forEach(el => {
+      let tex = el.getAttribute('data-tex');
+      if (!tex) {
+        tex = el.textContent.trim().replace(/^\$\$|\$\$$/g, '').trim();
+        if (tex) el.setAttribute('data-tex', tex);
+      }
+      if (tex) {
+        try {
+          katex.render(tex, el, { displayMode: true, throwOnError: false });
+        } catch (err) {
+          console.warn('KaTeX render warning:', err);
+        }
+      }
+    });
   }
 
-  triggerKaTeX();
-  setTimeout(triggerKaTeX, 300);
+  renderAllKaTeX();
+  setTimeout(renderAllKaTeX, 250);
 });
