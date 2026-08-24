@@ -573,7 +573,7 @@ body {
   display: grid;
   grid-template-columns: 1.3fr 0.7fr;
   gap: 2rem;
-  align-items: start;
+  align-items: stretch;
 }
 
 .console-bezel-outer {
@@ -582,14 +582,21 @@ body {
   padding: 0.5rem;
   border-radius: var(--radius-shell);
   box-shadow: var(--shadow-float);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .console-bezel-core {
   background: var(--bg-core);
   border: 1px solid var(--border-core);
   border-radius: var(--radius-core);
-  padding: 2.5rem;
+  padding: 2.25rem;
   box-shadow: var(--shadow-core);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 }
 
 .console-header-row {
