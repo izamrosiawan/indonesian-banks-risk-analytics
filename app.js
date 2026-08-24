@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const particles = [];
-    const numParticles = 35;
+    const numParticles = 25;
     for (let i = 0; i < numParticles; i++) {
       particles.push({
         x: Math.random() * width,
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(16, 185, 129, ${p.opacity * 0.5})`;
+        ctx.fillStyle = `rgba(5, 150, 105, ${p.opacity * 0.5})`;
         ctx.fill();
 
         for (let j = i + 1; j < particles.length; j++) {
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
             ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(16, 185, 129, ${0.1 * (1 - dist / 120)})`;
+            ctx.strokeStyle = `rgba(15, 23, 42, ${0.06 * (1 - dist / 120)})`;
             ctx.lineWidth = 0.6;
             ctx.stroke();
           }
@@ -106,33 +106,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const ldr = parseFloat(simLdr.value);
     const nim = parseFloat(simNim.value);
 
-    valCar.textContent = `${car.toFixed(1)}%`;
-    valNpl.textContent = `${npl.toFixed(1)}%`;
-    valLdr.textContent = `${ldr}%`;
-    valNim.textContent = `${nim.toFixed(1)}%`;
+    if (valCar) valCar.textContent = `${car.toFixed(1)}%`;
+    if (valNpl) valNpl.textContent = `${npl.toFixed(1)}%`;
+    if (valLdr) valLdr.textContent = `${ldr.toFixed(1)}%`;
+    if (valNim) valNim.textContent = `${nim.toFixed(1)}%`;
 
     let score = 50 + (car - 12) * 2.5 - (npl - 2) * 8.0 + (nim - 4) * 4.0 - Math.abs(ldr - 85) * 0.8;
     score = Math.max(10, Math.min(100, Math.round(score)));
 
-    simHealthValue.textContent = score;
-    const degrees = (score / 100) * 360;
-    simGaugeProgress.style.background = `conic-gradient(var(--color-primary) ${degrees}deg, var(--bg-surface-elevated) ${degrees}deg)`;
+    if (simHealthValue) simHealthValue.textContent = score;
+    if (simGaugeProgress) {
+      const degrees = (score / 100) * 360;
+      simGaugeProgress.style.background = `conic-gradient(var(--color-primary) ${degrees}deg, var(--bg-surface-elevated) ${degrees}deg)`;
+    }
 
-    if (score >= 80) {
-      simTierBadge.style.color = '#10b981';
-      simTierBadge.style.borderColor = '#10b981';
-      simStatusText.textContent = 'HIGHLY SOLVENT & RESILIENT';
-      simExplanationText.textContent = `Permodalan prima (CAR ${car}%) dengan bantalan tebal. Mampu menyerap lonjakan NPL hingga skenario stress-test terberat.`;
-    } else if (score >= 60) {
-      simTierBadge.style.color = '#f59e0b';
-      simTierBadge.style.borderColor = '#f59e0b';
-      simStatusText.textContent = 'MODERATE HEALTH BUFFER';
-      simExplanationText.textContent = `Kondisi keuangan berada dalam ambang batas aman OJK, namun memerlukan pemantauan ketat pada kualitas portofolio kredit.`;
-    } else {
-      simTierBadge.style.color = '#ef4444';
-      simTierBadge.style.borderColor = '#ef4444';
-      simStatusText.textContent = 'SOLVENCY WATCHLIST RISK';
-      simExplanationText.textContent = `Tekanan NPL (${npl}%) menggerus modal bank. Diperlukan injeksi modal tambahan atau pengetatan penyaluran kredit.`;
+    if (simTierBadge && simStatusText && simExplanationText) {
+      if (score >= 80) {
+        simStatusText.textContent = 'HIGHLY SOLVENT & RESILIENT';
+        simExplanationText.textContent = `Permodalan prima (CAR ${car}%) dengan bantalan tebal. Mampu menyerap lonjakan NPL hingga skenario stress-test terberat.`;
+      } else if (score >= 60) {
+        simStatusText.textContent = 'MODERATE HEALTH BUFFER';
+        simExplanationText.textContent = `Kondisi keuangan berada dalam ambang batas aman OJK, namun memerlukan pemantauan ketat pada kualitas portofolio kredit.`;
+      } else {
+        simStatusText.textContent = 'SOLVENCY WATCHLIST RISK';
+        simExplanationText.textContent = `Tekanan NPL (${npl}%) menggerus modal bank. Diperlukan injeksi modal tambahan atau pengetatan penyaluran kredit.`;
+      }
     }
   }
 
@@ -143,88 +141,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  document.querySelectorAll('.preset-chip').forEach(chip => {
+  document.querySelectorAll('.preset-chip[data-car]').forEach(chip => {
     chip.addEventListener('click', () => {
       document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
-      simCar.value = chip.dataset.car;
-      simNpl.value = chip.dataset.npl;
-      simLdr.value = chip.dataset.ldr;
-      simNim.value = chip.dataset.nim;
+      if (simCar && chip.dataset.car) simCar.value = chip.dataset.car;
+      if (simNpl && chip.dataset.npl) simNpl.value = chip.dataset.npl;
+      if (simLdr && chip.dataset.ldr) simLdr.value = chip.dataset.ldr;
+      if (simNim && chip.dataset.nim) simNim.value = chip.dataset.nim;
       calculateSimulator();
     });
   });
-
-  document.querySelectorAll('.bento-card, .console-deck-panel, .gauge-console-card, .math-telemetry-card, .analytics-panel').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      card.style.setProperty('--mouse-x', `${x}px`);
-      card.style.setProperty('--mouse-y', `${y}px`);
-    });
-  });
-
-  if (window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-
-    gsap.from('.hero-content > *', {
-      opacity: 0,
-      y: 28,
-      duration: 0.9,
-      stagger: 0.12,
-      ease: 'power3.out'
-    });
-
-    document.querySelectorAll('.chapter-section').forEach(section => {
-      const heading = section.querySelector('.chapter-heading-box');
-      const cards = section.querySelectorAll('.bento-card, .math-telemetry-card, .analytics-panel');
-
-      if (heading) {
-        gsap.from(heading, {
-          scrollTrigger: {
-            trigger: heading,
-            start: 'top 85%'
-          },
-          opacity: 0,
-          y: 30,
-          duration: 0.8,
-          ease: 'power2.out'
-        });
-      }
-
-      if (cards.length > 0) {
-        gsap.from(cards, {
-          scrollTrigger: {
-            trigger: cards[0],
-            start: 'top 85%'
-          },
-          opacity: 0,
-          y: 35,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: 'power2.out'
-        });
-      }
-    });
-  }
-
-  if (window.renderMathInElement) {
-    renderMathInElement(document.body, {
-      delimiters: [
-        { left: '$$', right: '$$', display: true },
-        { left: '$', right: '$', display: false }
-      ]
-    });
-  }
 
   let equityChart = null;
   let metricsChart = null;
 
   function renderCharts() {
-    const isLight = document.body.classList.contains('light-theme');
-    const textCol = isLight ? '#475569' : '#94a3b8';
-    const gridCol = isLight ? 'rgba(0,0,0,0.06)' : 'rgba(255,255,255,0.06)';
+    const textCol = '#475569';
+    const gridCol = 'rgba(15, 23, 42, 0.06)';
 
     const eCtx = document.getElementById('banksEquityChart');
     if (eCtx) {
@@ -234,10 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
         data: {
           labels: sampleDates,
           datasets: [
-            { label: 'BBCA', data: bbcaSeries, borderColor: '#10b981', tension: 0.3, borderWidth: 2, pointRadius: 2 },
-            { label: 'BBRI', data: bbriSeries, borderColor: '#3b82f6', tension: 0.3, borderWidth: 1.8, pointRadius: 2 },
-            { label: 'BMRI', data: bmriSeries, borderColor: '#f59e0b', tension: 0.3, borderWidth: 1.8, pointRadius: 2 },
-            { label: 'BBNI', data: bbniSeries, borderColor: '#94a3b8', tension: 0.3, borderWidth: 1.5, pointRadius: 2 }
+            { label: 'BBCA', data: bbcaSeries, borderColor: '#059669', tension: 0.3, borderWidth: 2.2, pointRadius: 3, pointBackgroundColor: '#059669' },
+            { label: 'BBRI', data: bbriSeries, borderColor: '#2563eb', tension: 0.3, borderWidth: 1.8, pointRadius: 2.5, pointBackgroundColor: '#2563eb' },
+            { label: 'BMRI', data: bmriSeries, borderColor: '#d97706', tension: 0.3, borderWidth: 1.8, pointRadius: 2.5, pointBackgroundColor: '#d97706' },
+            { label: 'BBNI', data: bbniSeries, borderColor: '#94a3b8', tension: 0.3, borderWidth: 1.5, pointRadius: 2, pointBackgroundColor: '#94a3b8' }
           ]
         },
         options: {
@@ -245,11 +179,19 @@ document.addEventListener('DOMContentLoaded', () => {
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              labels: { color: textCol, font: { family: 'Plus Jakarta Sans', size: 10 } }
+              labels: { color: textCol, font: { family: 'Plus Jakarta Sans', size: 11, weight: 600 } }
+            },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#ffffff',
+              bodyColor: '#94a3b8',
+              borderColor: '#059669',
+              borderWidth: 1
             }
           },
           scales: {
             y: {
+              beginAtZero: false,
               grid: { color: gridCol },
               ticks: { color: textCol, font: { family: 'JetBrains Mono', size: 10 } }
             },
@@ -270,8 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
         data: {
           labels: banksSharpe.map(b => b.bank),
           datasets: [
-            { label: 'Sharpe Ratio', data: banksSharpe.map(b => b.sharpe), backgroundColor: '#10b981b0', borderRadius: 4 },
-            { label: 'Annualized Return (%)', data: banksSharpe.map(b => b.returnPct), backgroundColor: '#3b82f6b0', borderRadius: 4 }
+            { label: 'Sharpe Ratio', data: banksSharpe.map(b => b.sharpe), backgroundColor: '#059669b0', hoverBackgroundColor: '#059669', borderRadius: 4 },
+            { label: 'Annualized Return (%)', data: banksSharpe.map(b => b.returnPct), backgroundColor: '#2563ebb0', hoverBackgroundColor: '#2563eb', borderRadius: 4 }
           ]
         },
         options: {
@@ -279,7 +221,14 @@ document.addEventListener('DOMContentLoaded', () => {
           maintainAspectRatio: false,
           plugins: {
             legend: {
-              labels: { color: textCol, font: { family: 'Plus Jakarta Sans', size: 10 } }
+              labels: { color: textCol, font: { family: 'Plus Jakarta Sans', size: 11, weight: 600 } }
+            },
+            tooltip: {
+              backgroundColor: '#0f172a',
+              titleColor: '#ffffff',
+              bodyColor: '#94a3b8',
+              borderColor: '#059669',
+              borderWidth: 1
             }
           },
           scales: {
@@ -290,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
             },
             x: {
               grid: { display: false },
-              ticks: { color: textCol, font: { family: 'Plus Jakarta Sans', size: 10 } }
+              ticks: { color: textCol, font: { family: 'Plus Jakarta Sans', size: 10, weight: 600 } }
             }
           }
         }
@@ -298,7 +247,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  renderCharts();
+  function renderAllKaTeX() {
+    if (!window.katex) return;
+    document.querySelectorAll('.katex-formula-box').forEach(el => {
+      let tex = el.getAttribute('data-tex');
+      if (!tex) {
+        tex = el.textContent.trim().replace(/^\$\$|\$\$$/g, '').trim();
+        if (tex) el.setAttribute('data-tex', tex);
+      }
+      if (tex) {
+        try {
+          katex.render(tex, el, { displayMode: true, throwOnError: false });
+        } catch (err) {
+          console.warn('KaTeX render warning:', err);
+        }
+      }
+    });
+  }
 
   if (window.gsap && window.ScrollTrigger) {
     gsap.registerPlugin(ScrollTrigger);
@@ -336,24 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function renderAllKaTeX() {
-    if (!window.katex) return;
-    document.querySelectorAll('.katex-formula-box').forEach(el => {
-      let tex = el.getAttribute('data-tex');
-      if (!tex) {
-        tex = el.textContent.trim().replace(/^\$\$|\$\$$/g, '').trim();
-        if (tex) el.setAttribute('data-tex', tex);
-      }
-      if (tex) {
-        try {
-          katex.render(tex, el, { displayMode: true, throwOnError: false });
-        } catch (err) {
-          console.warn('KaTeX render warning:', err);
-        }
-      }
-    });
-  }
-
+  calculateSimulator();
+  renderCharts();
   renderAllKaTeX();
   setTimeout(renderAllKaTeX, 250);
 });
